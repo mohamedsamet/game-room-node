@@ -1,4 +1,4 @@
-import {userServer} from './web/user-server';
+import {userServer} from './web/user/user-server';
 
 const port = 3000;
 userServer.listen(port, () => {
