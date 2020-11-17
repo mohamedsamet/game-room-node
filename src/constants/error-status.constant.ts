@@ -8,5 +8,9 @@ export const ERROR_RESPONSE: ErrorResponse[] = [
   {
     status: 409,
     message: 'Conflict'
+  },
+  {
+    status: 403,
+    message: 'Inauthorized'
   }
 ]

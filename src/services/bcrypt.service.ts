@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
-import { BcryptDto } from '../dto/user/bcrypt.dto';
 
-function hashPseudo(pseudo: string): BcryptDto {
+function hashPseudo(pseudo: string): string {
   return bcrypt.hashSync(pseudo, 10);
 }
 

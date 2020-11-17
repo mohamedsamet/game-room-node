@@ -20,4 +20,16 @@ userServer.post(userUrl, jsonParse, (req, res) => {
   res.send(response);
 });
 
+/** Get logged user with hash */
+userServer.get(userUrl, jsonParse, (req, res) => {
+  const hash = req.headers.authorization;
+  let userLogged: UserDto;
+  try {
+    userLogged = userService.getUserLogged(hash)
+  } catch (error) {
+    return errorHandlingService.getResponse(res, error)
+  }
+  res.send(userLogged);
+});
+
 export {userServer}
