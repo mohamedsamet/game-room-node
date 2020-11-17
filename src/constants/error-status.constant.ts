@@ -12,5 +12,9 @@ export const ERROR_RESPONSE: ErrorResponse[] = [
   {
     status: 403,
     message: 'Inauthorized'
+  },
+  {
+    status: 404,
+    message: 'Not found'
   }
 ]

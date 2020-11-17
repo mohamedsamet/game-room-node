@@ -1,7 +1,7 @@
 import { UserDto } from '../dto/user/user.dto';
 import { bcryptService } from './bcrypt.service';
 
-const users: UserDto[] = [];
+let users: UserDto[] = [];
 function loginUser(user: UserDto): UserDto {
   if (checkIfPseudoExist(user.pseudo)) {
     throw new Error('409');
@@ -21,9 +21,18 @@ function getUserLogged(hash: string): UserDto {
   }
 }
 
+function disconnectUser(hash: string): void {
+  const userFound = users.find(user => user.hash === hash.toString());
+  if (userFound) {
+    users = users.filter(user => user.hash !== hash);
+  } else {
+    throw new Error('404');
+  }
+}
+
 function checkIfPseudoExist(pseudo: string): boolean {
   return users.some(user => user.pseudo === pseudo);
 }
 
-const userService = {loginUser, getUserLogged};
+const userService = {loginUser, getUserLogged, disconnectUser};
 export {userService};

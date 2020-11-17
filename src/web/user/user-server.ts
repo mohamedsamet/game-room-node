@@ -32,4 +32,15 @@ userServer.get(userUrl, jsonParse, (req, res) => {
   res.send(userLogged);
 });
 
+/** Disconnect user with hash */
+userServer.delete(userUrl, jsonParse, (req, res) => {
+  const hash = req.headers.authorization;
+  try {
+    userService.disconnectUser(hash)
+  } catch (error) {
+    return errorHandlingService.getResponse(res, error)
+  }
+  res.status(204).send();
+});
+
 export {userServer}
