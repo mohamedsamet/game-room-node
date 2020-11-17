@@ -8,9 +8,9 @@ const userServer = expressServer;
 const jsonParse = bodyParser.json();
 
 /** Add new user with pseudo */
-userServer.post(userUrl, jsonParse,  (req, res) => {
+userServer.post(userUrl, jsonParse, (req, res) => {
   const request: UserDto = req.body;
-  const response: UserDto =  userService.loginUser(request);
+  const response: UserDto = userService.loginUser(request);
   res.send(response);
 });
 
