@@ -30,9 +30,13 @@ function disconnectUser(hash: string): void {
   }
 }
 
+function checkIfUserExist(hash: string): boolean {
+  return users.some(user => user.hash === hash);
+}
+
 function checkIfPseudoExist(pseudo: string): boolean {
   return users.some(user => user.pseudo === pseudo);
 }
 
-const userService = {loginUser, getUserLogged, disconnectUser};
+const userService = {loginUser, getUserLogged, disconnectUser, checkIfUserExist};
 export {userService};

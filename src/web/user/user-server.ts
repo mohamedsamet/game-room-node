@@ -1,11 +1,11 @@
 import bodyParser from 'body-parser';
 import { userUrl } from '../server-urls';
-import { expressServer } from '../express-bean/allow-origin';
 import { UserDto } from '../../dto/user/user.dto';
 import { userService } from '../../services/user.service';
 import { errorHandlingService } from '../../services/error-handling.service';
+import express from 'express';
 
-const userServer = expressServer;
+const userServer = express();
 const jsonParse = bodyParser.json();
 
 /** Add new user with pseudo */

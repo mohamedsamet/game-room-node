@@ -1,3 +1,3 @@
-const userUrl = '/users';
+export const userUrl = '/users';
+export const roomUrl = '/rooms';
 
-export {userUrl}
