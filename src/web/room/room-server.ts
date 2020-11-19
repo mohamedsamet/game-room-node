@@ -13,10 +13,16 @@ roomServer.post(roomUrl, jsonParse, (req, res) => {
   const request: RoomDto = req.body;
   let response: RoomDto;
   try {
-    response = roomService.addRoom(request);
+    response = roomService.addRoom(request, req.headers.authorization);
   } catch (err) {
     return errorHandlingService.getResponse(res, err);
   }
+  res.send(response);
+});
+
+/** Get rooms list */
+roomServer.get(roomUrl, jsonParse, (req, res) => {
+  const response: RoomDto[] = roomService.getRoomsList();
   res.send(response);
 });
 
