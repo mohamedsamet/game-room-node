@@ -1,16 +1,18 @@
 import express from 'express';
 import http from 'http';
-import socket, { Socket } from 'socket.io';
-import { roomService } from '../../services/room.service';
+import socket from 'socket.io';
+import { CONNECTION, REQUEST_ROOMS } from '../../constants/socket-events';
+import { socketRoomsService } from '../../services/rooms/socket/socket-rooms-service';
 
 const app = express();
 const socketServer = new http.Server(app)
 const io = socket(socketServer);
-io.on("connection", (event) => {
+
+io.on(CONNECTION, (event) => {
   console.log('connected user', event.id);
-  event.on('reqRooms', () => {
-    event.emit('getRooms', {data: roomService.getRoomsList()});
-  })
-})
+  event.on(REQUEST_ROOMS, () => {
+    socketRoomsService.emitRooms(io);
+  });
+});
 
 export {socketServer}

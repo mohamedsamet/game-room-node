@@ -1,5 +1,5 @@
-import { RoomDto } from '../dto/room/room.dto';
-import { userService } from './user.service';
+import { RoomDto } from '../../../dto/room/room.dto';
+import { userService } from '../../user/user.service';
 
 const rooms: RoomDto[] = [];
 

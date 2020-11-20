@@ -1,8 +1,8 @@
 import bodyParser from 'body-parser';
 import { userUrl } from '../server-urls';
 import { UserDto } from '../../dto/user/user.dto';
-import { userService } from '../../services/user.service';
-import { errorHandlingService } from '../../services/error-handling.service';
+import { userService } from '../../services/user/user.service';
+import { errorHandlingService } from '../../services/common-http/error-handling.service';
 import express from 'express';
 
 const userServer = express();

@@ -1,9 +1,9 @@
 import bodyParser from 'body-parser';
-import { errorHandlingService } from '../../services/error-handling.service';
+import { errorHandlingService } from '../../services/common-http/error-handling.service';
 import express from 'express';
 import { roomUrl } from '../server-urls';
 import { RoomDto } from '../../dto/room/room.dto';
-import { roomService } from '../../services/room.service';
+import { roomService } from '../../services/rooms/http/room.service';
 
 const roomServer = express();
 const jsonParse = bodyParser.json();

@@ -1,6 +1,6 @@
 import express from 'express';
 import { userUrl } from '../server-urls';
-import { userService } from '../../services/user.service';
+import { userService } from '../../services/user/user.service';
 
 const authServer = express();
 

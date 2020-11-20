@@ -1,4 +1,4 @@
-import { UserDto } from '../dto/user/user.dto';
+import { UserDto } from '../../dto/user/user.dto';
 import { bcryptService } from './bcrypt.service';
 
 let users: UserDto[] = [];
