@@ -17,7 +17,6 @@ function getRoomsList(): RoomDto[] {
   return rooms;
 }
 
-
 function checkIfRoomNameExist(name: string): boolean {
   return rooms.some(room => room.name === name);
 }
