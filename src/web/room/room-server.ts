@@ -22,7 +22,7 @@ roomServer.post(roomUrl, jsonParse, (req, res) => {
 
 /** Get rooms list */
 roomServer.get(roomUrl, jsonParse, (req, res) => {
-  const response: RoomDto[] = roomService.getRoomsList();
+  const response: RoomDto[] = roomService.getRoomsFirstPage();
   res.send(response);
 });
 

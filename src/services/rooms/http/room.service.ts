@@ -18,9 +18,12 @@ function getRoomsFirstPage(): RoomDto[] {
   return rooms.slice(0, ROOM_PER_PAGE);
 }
 
+function getTotalRooms(): number {
+  return rooms.length;
+}
 function checkIfRoomNameExist(name: string): boolean {
   return rooms.some(room => room.name === name);
 }
 
-const roomService = {addRoom, getRoomsList: getRoomsFirstPage};
+const roomService = {addRoom, getTotalRooms, getRoomsFirstPage};
 export {roomService};
