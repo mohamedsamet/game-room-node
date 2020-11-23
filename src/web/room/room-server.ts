@@ -4,6 +4,7 @@ import express from 'express';
 import { roomUrl } from '../server-urls';
 import { RoomDto } from '../../dto/room/room.dto';
 import { roomService } from '../../services/rooms/http/room.service';
+import { RoomsResultDto } from '../../dto/room/rooms-result.dto';
 
 const roomServer = express();
 const jsonParse = bodyParser.json();
@@ -22,7 +23,7 @@ roomServer.post(roomUrl, jsonParse, (req, res) => {
 
 /** Get rooms list */
 roomServer.get(roomUrl, jsonParse, (req, res) => {
-  const response: RoomDto[] = roomService.getRoomsFirstPage();
+  const response: RoomsResultDto = roomService.getRoomsFirstPage();
   res.send(response);
 });
 
