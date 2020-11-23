@@ -19,12 +19,13 @@ function getRoomsFirstPage(): RoomsResultDto {
   return {rooms: rooms.slice(0, ROOM_PER_PAGE), total: rooms.length};
 }
 
-function getTotalRooms(): number {
-  return rooms.length;
+function getRoomsByPage(start: number, end: number): RoomsResultDto {
+  return {rooms: rooms.slice(start, end + 1), total: rooms.length};
 }
+
 function checkIfRoomNameExist(name: string): boolean {
   return rooms.some(room => room.name === name);
 }
 
-const roomService = {addRoom, getTotalRooms, getRoomsFirstPage};
+const roomService = {addRoom, getRoomsByPage, getRoomsFirstPage};
 export {roomService};
