@@ -9,6 +9,7 @@ function addRoom(room: RoomDto, hash: string): RoomDto {
   if (checkIfRoomNameExist(room.name)) {
     throw new Error('409');
   } else {
+    room.id = rooms.length + 1;
     room.createdBy = userService.getUserLogged(hash).pseudo;
     rooms.unshift(room)
   }

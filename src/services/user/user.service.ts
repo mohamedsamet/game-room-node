@@ -7,6 +7,7 @@ function loginUser(user: UserDto): UserDto {
     throw new Error('409');
   } else {
     user.hash = bcryptService.hashPseudo(user.pseudo);
+    user.id = users.length + 1;
     users.push(user)
   }
   return user;
