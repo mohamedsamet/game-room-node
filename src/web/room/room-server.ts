@@ -5,6 +5,7 @@ import { roomUrl } from '../server-urls';
 import { RoomDto } from '../../dto/room/room.dto';
 import { roomService } from '../../services/rooms/http/room.service';
 import { RoomsResultDto } from '../../dto/room/rooms-result.dto';
+import { ADD_NEW_ROOM_LOG, GET_ROOMS_BY_PAGE_LOG } from '../../constants/logs.constant';
 
 const roomServer = express();
 const jsonParse = bodyParser.json();
@@ -18,13 +19,19 @@ roomServer.post(roomUrl, jsonParse, (req, res) => {
   } catch (err) {
     return errorHandlingService.getResponse(res, err);
   }
+  console.log(ADD_NEW_ROOM_LOG);
   res.send(response);
 });
 
 /** Get rooms list */
 roomServer.get(roomUrl, jsonParse, (req, res) => {
-  const response: RoomsResultDto = roomService.getRoomsByPage(+req.query.start, +req.query.end);
-  console.log();
+  let response: RoomsResultDto;
+  try {
+    response = roomService.getRoomsByPage(+req.query.start, +req.query.end);
+  } catch (err) {
+    return errorHandlingService.getResponse(res, err);
+  }
+  console.log(GET_ROOMS_BY_PAGE_LOG);
   res.send(response);
 });
 
