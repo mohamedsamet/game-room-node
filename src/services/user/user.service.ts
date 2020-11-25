@@ -1,10 +1,11 @@
 import { UserDto } from '../../dto/user/user.dto';
 import { bcryptService } from './bcrypt.service';
+import { CONFLICT_CODE, INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../constants/errors-code.constant';
 
 let users: UserDto[] = [];
 function loginUser(user: UserDto): UserDto {
   if (checkIfPseudoExist(user.pseudo)) {
-    throw new Error('409');
+    throw new Error(CONFLICT_CODE);
   } else {
     user.hash = bcryptService.hashPseudo(user.pseudo);
     user.id = users.length + 1;
@@ -18,7 +19,7 @@ function getUserLogged(hash: string): UserDto {
   if (userFound) {
     return  userFound;
   } else {
-    throw new Error('403');
+    throw new Error(INAUTHORIZED_CODE);
   }
 }
 
@@ -27,7 +28,7 @@ function disconnectUser(hash: string): void {
   if (userFound) {
     users = users.filter(user => user.hash !== hash);
   } else {
-    throw new Error('404');
+    throw new Error(NOT_FOUND_CODE);
   }
 }
 

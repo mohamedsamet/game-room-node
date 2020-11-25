@@ -5,6 +5,7 @@ import { GET_ROOMS } from '../../../constants/socket-events';
 function emitRooms(event: SocketIO.Server) {
   event.emit(GET_ROOMS, {data: roomService.getRoomsFirstPage()});
 }
+
 const socketRoomsService = {emitRooms}
 
 export {socketRoomsService}

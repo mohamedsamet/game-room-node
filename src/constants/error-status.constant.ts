@@ -1,20 +1,21 @@
 import { ErrorResponse } from '../models/error-status.model';
+import { BAD_REQUEST_CODE, CONFLICT_CODE, INAUTHORIZED_CODE, NOT_FOUND_CODE } from './errors-code.constant';
 
 export const ERROR_RESPONSE: ErrorResponse[] = [
   {
-    status: 400,
+    status: BAD_REQUEST_CODE,
     message: 'Bad Request'
   },
   {
-    status: 409,
+    status: CONFLICT_CODE,
     message: 'Conflict'
   },
   {
-    status: 403,
+    status: INAUTHORIZED_CODE,
     message: 'Inauthorized'
   },
   {
-    status: 404,
+    status: NOT_FOUND_CODE,
     message: 'Not found'
   }
-]
+];
