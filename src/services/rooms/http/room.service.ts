@@ -71,10 +71,9 @@ function addUserToRoom(roomId: number, userHash: string): void {
 function removeUserFromRoom(roomId: number, userHash: string): void {
   if (isRoomExist(roomId)) {
     if (userService.checkIfUserExist(userHash)) {
-      const userId: number = userService.getUserLogged(userHash).id;
       const roomtoEdit: RoomDto = rooms.find(roomEntred => roomEntred.id === roomId);
       let usersOfroomToEdit: UserDto[] = roomtoEdit.users;
-      usersOfroomToEdit = usersOfroomToEdit.filter(userInRoom => userInRoom.id !== userId);
+      usersOfroomToEdit = usersOfroomToEdit.filter(userInRoom => userInRoom.hash !== userHash);
       roomtoEdit.users = usersOfroomToEdit;
     } else {
       throw new Error(INAUTHORIZED_CODE);
@@ -84,5 +83,17 @@ function removeUserFromRoom(roomId: number, userHash: string): void {
   }
 }
 
-const roomService = {addRoom, getRoomsByPage, getRoomsFirstPage, deleteRoomById, addUserToRoom, removeUserFromRoom};
+function removeUserFromAllRooms(userHash: string): void {
+    if (userService.checkIfUserExist(userHash)) {
+      rooms.forEach(room => {
+        let userToEdit = room.users;
+        userToEdit = userToEdit.filter(user => user.hash !== userHash);
+        room.users = userToEdit;
+      })
+    } else {
+      throw new Error(INAUTHORIZED_CODE);
+    }
+}
+
+const roomService = {addRoom, getRoomsByPage, getRoomsFirstPage, deleteRoomById, addUserToRoom, removeUserFromRoom, removeUserFromAllRooms};
 export {roomService};
