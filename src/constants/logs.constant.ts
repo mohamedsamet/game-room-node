@@ -9,3 +9,4 @@ export const GET_LOGGED_USER_LOG = HTTP_LOG + 'logged user sent';
 export const DISCONNECT_USER_LOG = HTTP_LOG + 'user disconnected';
 export const ADD_NEW_USER_LOG = HTTP_LOG + 'add new user';
 export const GET_ROOMS_SOCKET_LOG = SOCKET_LOG + 'updated rooms list emitted';
+export const GET_USERS_SOCKET_IN_ROOM_LOG = SOCKET_LOG + 'updated users list in room emitted';

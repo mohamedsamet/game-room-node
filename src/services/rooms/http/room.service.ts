@@ -95,5 +95,18 @@ function removeUserFromAllRooms(userHash: string): void {
     }
 }
 
-const roomService = {addRoom, getRoomsByPage, getRoomsFirstPage, deleteRoomById, addUserToRoom, removeUserFromRoom, removeUserFromAllRooms};
+function getUsersInRoom(roomId: string): UserDto[] {
+  return rooms.find(room => room.id === +roomId).users;
+}
+
+const roomService = {
+  addRoom,
+  getRoomsByPage,
+  getRoomsFirstPage,
+  deleteRoomById,
+  addUserToRoom,
+  removeUserFromRoom,
+  removeUserFromAllRooms,
+  getUsersInRoom
+};
 export {roomService};
