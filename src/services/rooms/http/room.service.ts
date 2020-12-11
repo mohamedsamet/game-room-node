@@ -3,6 +3,8 @@ import { userService } from '../../user/user.service';
 import { ROOM_PER_PAGE } from '../../../constants/rooms.constant';
 import { RoomsResultDto } from '../../../dto/room/rooms-result.dto';
 import { CONFLICT_CODE, INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../../constants/errors-code.constant';
+import { UserDto } from '../../../dto/user/user.dto';
+import { Room } from 'socket.io';
 
 let rooms: RoomDto[] = [];
 
@@ -14,6 +16,7 @@ function addRoom(room: RoomDto, hash: string): RoomDto {
     room.id = rooms.length + 1;
     room.createdBy = loggedUser.pseudo;
     room.createdByUserHash = loggedUser.hash;
+    room.users = [];
     rooms.unshift(room)
   }
   return room;
@@ -52,5 +55,34 @@ function isRoomExist(roomId: number): boolean {
   return rooms.some(room => room.id === roomId);
 }
 
-const roomService = {addRoom, getRoomsByPage, getRoomsFirstPage, deleteRoomById};
+function addUserToRoom(roomId: number, userHash: string): void {
+  if (isRoomExist(roomId)) {
+    if (userService.checkIfUserExist(userHash)) {
+      const user: UserDto = userService.getUserLogged(userHash);
+      rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
+    } else {
+      throw new Error(INAUTHORIZED_CODE);
+    }
+  } else {
+    throw new Error(NOT_FOUND_CODE);
+  }
+}
+
+function removeUserFromRoom(roomId: number, userHash: string): void {
+  if (isRoomExist(roomId)) {
+    if (userService.checkIfUserExist(userHash)) {
+      const userId: number = userService.getUserLogged(userHash).id;
+      const roomtoEdit: RoomDto = rooms.find(roomEntred => roomEntred.id === roomId);
+      let usersOfroomToEdit: UserDto[] = roomtoEdit.users;
+      usersOfroomToEdit = usersOfroomToEdit.filter(userInRoom => userInRoom.id !== userId);
+      roomtoEdit.users = usersOfroomToEdit;
+    } else {
+      throw new Error(INAUTHORIZED_CODE);
+    }
+  } else {
+    throw new Error(NOT_FOUND_CODE);
+  }
+}
+
+const roomService = {addRoom, getRoomsByPage, getRoomsFirstPage, deleteRoomById, addUserToRoom, removeUserFromRoom};
 export {roomService};

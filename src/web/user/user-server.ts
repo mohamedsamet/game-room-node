@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import { userUrl } from '../server-urls';
+import { USER_URL } from '../server-urls';
 import { UserDto } from '../../dto/user/user.dto';
 import { userService } from '../../services/user/user.service';
 import { errorHandlingService } from '../../services/common-http/error-handling.service';
@@ -10,7 +10,7 @@ const userServer = express();
 const jsonParse = bodyParser.json();
 
 /** Add new user with pseudo */
-userServer.post(userUrl, jsonParse, (req, res) => {
+userServer.post(USER_URL, jsonParse, (req, res) => {
   const request: UserDto = req.body;
   let response: UserDto;
   try {
@@ -23,7 +23,7 @@ userServer.post(userUrl, jsonParse, (req, res) => {
 });
 
 /** Get logged user with hash */
-userServer.get(userUrl, jsonParse, (req, res) => {
+userServer.get(USER_URL, jsonParse, (req, res) => {
   const hash = req.headers.authorization;
   let userLogged: UserDto;
   try {
@@ -36,7 +36,7 @@ userServer.get(userUrl, jsonParse, (req, res) => {
 });
 
 /** Disconnect user with hash */
-userServer.delete(userUrl, jsonParse, (req, res) => {
+userServer.delete(USER_URL, jsonParse, (req, res) => {
   const hash = req.headers.authorization;
   try {
     userService.disconnectUser(hash)
