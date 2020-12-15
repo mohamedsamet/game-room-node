@@ -4,7 +4,6 @@ import { ROOM_PER_PAGE } from '../../../constants/rooms.constant';
 import { RoomsResultDto } from '../../../dto/room/rooms-result.dto';
 import { CONFLICT_CODE, INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../../constants/errors-code.constant';
 import { UserDto } from '../../../dto/user/user.dto';
-import { Room } from 'socket.io';
 
 let rooms: RoomDto[] = [];
 
@@ -95,8 +94,8 @@ function removeUserFromAllRooms(userHash: string): void {
     }
 }
 
-function getUsersInRoom(roomId: string): UserDto[] {
-  return rooms.find(room => room.id === +roomId).users;
+function getUsersInRoom(roomId: number): UserDto[] {
+  return rooms.find(room => room.id === roomId).users;
 }
 
 const roomService = {
