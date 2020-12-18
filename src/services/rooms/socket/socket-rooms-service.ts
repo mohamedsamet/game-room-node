@@ -7,8 +7,8 @@ function emitRooms(event: SocketIO.Server) {
   event.emit(GET_ROOMS, {data: roomService.getRoomsFirstPage()});
 }
 
-function emitUsersInRoom(event: SocketIO.Server, roomId: number) {
-  event.emit(GET_USERS_IN_ROOM, {data: getUsersInRoomResponse(roomId)});
+function emitUsersInRoom(event: SocketIO.Server, room: string) {
+  event.sockets.in(room).emit(GET_USERS_IN_ROOM, {data: getUsersInRoomResponse(+room)});
 }
 
 function getUsersInRoomResponse(roomId: number): UsersRoomResultDto {

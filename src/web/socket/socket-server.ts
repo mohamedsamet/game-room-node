@@ -1,9 +1,11 @@
 import express from 'express';
 import http from 'http';
 import socket from 'socket.io';
-import { CONNECTION, DISCONNECT, REQUEST_ROOMS, REQUEST_USERS_IN_ROOM } from '../../constants/socket-events';
+import { CONNECTION, DISCONNECT, LEAVE_USER_FROM_ROOM, REQUEST_ROOMS, REQUEST_USERS_IN_ROOM } from '../../constants/socket-events';
 import { socketRoomsService } from '../../services/rooms/socket/socket-rooms-service';
-import { GET_ROOMS_SOCKET_LOG, GET_USERS_SOCKET_IN_ROOM_LOG } from '../../constants/logs.constant';
+import {
+  CONNECTED, DISCONNECTED, GET_ROOMS_SOCKET_LOG, GET_USERS_SOCKET_IN_ROOM_LOG, LEAVE_USER_IN_ROOM_LOG
+} from '../../constants/logs.constant';
 import { roomService } from '../../services/rooms/http/room.service';
 
 const app = express();
@@ -12,8 +14,7 @@ const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {
   let userConnectedHash: string;
-  const roomsConnected: number[] = [];
-  console.log('connected user', socketEvent.id);
+  console.log(CONNECTED, socketEvent.id);
   socketEvent.on(REQUEST_ROOMS, userHash => {
     console.log(GET_ROOMS_SOCKET_LOG);
     userConnectedHash = userHash;
@@ -22,23 +23,28 @@ io.on(CONNECTION, (socketEvent) => {
 
   socketEvent.on(REQUEST_USERS_IN_ROOM, roomId => {
     console.log(GET_USERS_SOCKET_IN_ROOM_LOG);
+    socketEvent.join(roomId);
     socketRoomsService.emitUsersInRoom(io, roomId);
-    roomsConnected.push(roomId);
+  });
+
+  socketEvent.on(LEAVE_USER_FROM_ROOM, roomId => {
+    console.log(LEAVE_USER_IN_ROOM_LOG);
+    socketEvent.leave(roomId);
+    socketRoomsService.emitUsersInRoom(io, roomId);
   });
 
   socketEvent.on(DISCONNECT, () => {
-    console.log('disconnected user', userConnectedHash);
+    console.log(DISCONNECTED, userConnectedHash);
     roomService.removeUserFromAllRooms(userConnectedHash);
     socketRoomsService.emitRooms(io);
-    emitToAllConnectedRooms(roomsConnected);
+    emitToAllConnectedRooms();
   })
 });
 
-function emitToAllConnectedRooms(roomsIds: number[]) {
-  roomsIds.forEach(roomId => {
-    socketRoomsService.emitUsersInRoom(io, roomId);
+function emitToAllConnectedRooms() {
+  roomService.getRoomsIds().forEach(roomId => {
+    socketRoomsService.emitUsersInRoom(io, roomId.toString());
   })
 }
-
 
 export {socketServer}

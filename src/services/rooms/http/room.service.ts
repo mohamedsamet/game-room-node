@@ -57,8 +57,12 @@ function isRoomExist(roomId: number): boolean {
 function addUserToRoom(roomId: number, userHash: string): void {
   if (isRoomExist(roomId)) {
     if (userService.checkIfUserExist(userHash)) {
-      const user: UserDto = userService.getUserLogged(userHash);
-      rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
+      if (!isUserExistInRoom(roomId, userHash)) {
+        const user: UserDto = userService.getUserLogged(userHash);
+        rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
+      } else {
+        throw new Error(CONFLICT_CODE);
+      }
     } else {
       throw new Error(INAUTHORIZED_CODE);
     }
@@ -94,8 +98,16 @@ function removeUserFromAllRooms(userHash: string): void {
     }
 }
 
+function isUserExistInRoom(roomId: number, userHash: string) {
+  return rooms.find(room => room.id === roomId).users.some(user => user.hash === userHash);
+}
+
 function getUsersInRoom(roomId: number): UserDto[] {
   return rooms.find(room => room.id === roomId).users;
+}
+
+function getRoomsIds(): number[] {
+  return rooms.map(room => room.id);
 }
 
 const roomService = {
@@ -106,6 +118,7 @@ const roomService = {
   addUserToRoom,
   removeUserFromRoom,
   removeUserFromAllRooms,
-  getUsersInRoom
+  getUsersInRoom,
+  getRoomsIds
 };
 export {roomService};
