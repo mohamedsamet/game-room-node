@@ -1,10 +1,10 @@
 import express from 'express';
-import { ROOM_URL } from '../server-urls';
-import { RoomDto } from '../../dto/room/room.dto';
-import { roomService } from '../../services/rooms/http/room.service';
-import { errorHandlingService } from '../../services/common-http/error-handling.service';
-import { ADD_NEW_ROOM_LOG, DELETE_ROOM_BY_ID, GET_ROOMS_BY_PAGE_LOG } from '../../constants/logs.constant';
-import { RoomsResultDto } from '../../dto/room/rooms-result.dto';
+import { ROOM_URL } from '../../server-urls';
+import { RoomDto } from '../../../dto/room/room.dto';
+import { roomService } from '../../../services/rooms/http/room.service';
+import { errorHandlingService } from '../../../services/common-http/error-handling.service';
+import { ADD_NEW_ROOM_LOG, DELETE_ROOM_BY_ID, GET_ROOMS_BY_PAGE_LOG } from '../../../constants/logs.constant';
+import { RoomsResultDto } from '../../../dto/room/rooms-result.dto';
 import bodyParser from 'body-parser';
 
 const roomCrudServer = express();

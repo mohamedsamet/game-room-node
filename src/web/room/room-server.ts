@@ -1,6 +1,6 @@
 import express from 'express';
-import { roomCrudServer } from './room-crud-server';
-import { roomAccessServer } from './room-access.server';
+import { roomCrudServer } from './servers/room-crud-server';
+import { roomAccessServer } from './servers/room-access.server';
 
 const roomServer = express();
 
