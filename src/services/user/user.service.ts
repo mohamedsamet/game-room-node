@@ -1,17 +1,18 @@
 import { UserDto } from '../../dto/user/user.dto';
 import { bcryptService } from './bcrypt.service';
 import { CONFLICT_CODE, INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../constants/errors-code.constant';
+import { addUser } from '../../repository/user.repository';
 
 let users: UserDto[] = [];
-function loginUser(user: UserDto): UserDto {
+async function loginUser(user: UserDto): Promise<UserDto> {
   if (checkIfPseudoExist(user.pseudo)) {
     throw new Error(CONFLICT_CODE);
   } else {
     user.hash = bcryptService.hashPseudo(user.pseudo);
     user.id = users.length + 1;
     users.push(user)
+    return addUser(user).then(() => {return user});
   }
-  return user;
 }
 
 function getUserLogged(hash: string): UserDto {

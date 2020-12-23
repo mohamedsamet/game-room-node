@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import { USER_URL } from '../server-urls';
+import { USER_URL } from '../../constants/api-const';
 import { UserDto } from '../../dto/user/user.dto';
 import { userService } from '../../services/user/user.service';
 import { errorHandlingService } from '../../services/common-http/error-handling.service';
@@ -12,14 +12,14 @@ const jsonParse = bodyParser.json();
 /** Add new user with pseudo */
 userServer.post(USER_URL, jsonParse, (req, res) => {
   const request: UserDto = req.body;
-  let response: UserDto;
   try {
-    response = userService.loginUser(request);
+    userService.loginUser(request).then(user => {
+      res.send(user);
+    })
   } catch (err) {
     return errorHandlingService.getResponse(res, err);
   }
   console.log(ADD_NEW_USER_LOG);
-  res.send(response);
 });
 
 /** Get logged user with hash */

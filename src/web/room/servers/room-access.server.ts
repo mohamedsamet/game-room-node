@@ -1,5 +1,5 @@
 import express from 'express';
-import { ROOM_ACCESS_URL } from '../../server-urls';
+import { ROOM_ACCESS_URL } from '../../../constants/api-const';
 import { roomService } from '../../../services/rooms/http/room.service';
 import { errorHandlingService } from '../../../services/common-http/error-handling.service';
 import { ADD_USER_TO_ROOM_LOG, REMOVE_USER_FROM_ROOM_LOG } from '../../../constants/logs.constant';

@@ -1,5 +1,5 @@
 import express from 'express';
-import { ROOM_URL } from '../../server-urls';
+import { ROOM_URL } from '../../../constants/api-const';
 import { RoomDto } from '../../../dto/room/room.dto';
 import { roomService } from '../../../services/rooms/http/room.service';
 import { errorHandlingService } from '../../../services/common-http/error-handling.service';

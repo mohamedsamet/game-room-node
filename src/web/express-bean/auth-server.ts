@@ -1,5 +1,5 @@
 import express from 'express';
-import { USER_URL } from '../server-urls';
+import { USER_URL } from '../../constants/api-const';
 import { userService } from '../../services/user/user.service';
 
 const authServer = express();

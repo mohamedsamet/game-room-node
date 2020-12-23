@@ -1,6 +1,8 @@
 const HTTP_LOG = '[http] ';
 const SOCKET_LOG = '[ws] ';
+const DB_LOG = '[db] ';
 export const ADD_NEW_ROOM_LOG = HTTP_LOG + 'add new room';
+export const EXPRESS_CONNECTED_LOG = HTTP_LOG + 'connected to http express server on port: ';
 export const ADD_USER_TO_ROOM_LOG = HTTP_LOG + 'add user to room';
 export const REMOVE_USER_FROM_ROOM_LOG = HTTP_LOG + 'remove user from room';
 export const GET_ROOMS_BY_PAGE_LOG = HTTP_LOG + 'get rooms list by page';
@@ -13,3 +15,4 @@ export const DISCONNECTED = SOCKET_LOG + 'user disconnected with id: ';
 export const GET_ROOMS_SOCKET_LOG = SOCKET_LOG + 'updated rooms list emitted';
 export const GET_USERS_SOCKET_IN_ROOM_LOG = SOCKET_LOG + 'updated users list in room emitted';
 export const LEAVE_USER_IN_ROOM_LOG = SOCKET_LOG + 'leave user from room emitted';
+export const MONGO_DB_CONNECTED_LOG = DB_LOG + 'connected to Mongo database';
