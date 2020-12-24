@@ -8,7 +8,7 @@ async function loginUser(user: UserDto): Promise<IUser> {
   return userRepository.addUser(user);
 }
 
-function getUserLogged(hash: string): Promise<IUser> {
+async function getUserLogged(hash: string): Promise<IUser> {
   return userRepository.getUserByHash(hash);
 }
 
@@ -16,9 +16,5 @@ function disconnectUser(hash: string): Promise<IUser> {
   return userRepository.removeUserByHash(hash);
 }
 
-function checkIfUserExist(hash: string): boolean {
-  return !!hash;
-}
-
-const userService = {loginUser, getUserLogged, disconnectUser, checkIfUserExist};
+const userService = {loginUser, getUserLogged, disconnectUser};
 export {userService};

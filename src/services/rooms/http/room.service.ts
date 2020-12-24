@@ -56,15 +56,11 @@ function isRoomExist(roomId: number): boolean {
 
 function addUserToRoom(roomId: number, userHash: string): void {
   if (isRoomExist(roomId)) {
-    if (userService.checkIfUserExist(userHash)) {
-      if (!isUserExistInRoom(roomId, userHash)) {
-      //  const user: UserDto = userService.getUserLogged(userHash);
-      //  rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
-      } else {
-        throw new Error(CONFLICT_CODE);
-      }
+    if (!isUserExistInRoom(roomId, userHash)) {
+    //  const user: UserDto = userService.getUserLogged(userHash);
+    //  rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
     } else {
-      throw new Error(INAUTHORIZED_CODE);
+      throw new Error(CONFLICT_CODE);
     }
   } else {
     throw new Error(NOT_FOUND_CODE);
@@ -73,29 +69,21 @@ function addUserToRoom(roomId: number, userHash: string): void {
 
 function removeUserFromRoom(roomId: number, userHash: string): void {
   if (isRoomExist(roomId)) {
-    if (userService.checkIfUserExist(userHash)) {
       const roomtoEdit: RoomDto = rooms.find(roomEntred => roomEntred.id === roomId);
-      let usersOfroomToEdit: UserDto[] = roomtoEdit.users;
-      usersOfroomToEdit = usersOfroomToEdit.filter(userInRoom => userInRoom.hash !== userHash);
-      roomtoEdit.users = usersOfroomToEdit;
-    } else {
-      throw new Error(INAUTHORIZED_CODE);
-    }
+    let usersOfroomToEdit: UserDto[] = roomtoEdit.users;
+    usersOfroomToEdit = usersOfroomToEdit.filter(userInRoom => userInRoom.hash !== userHash);
+    roomtoEdit.users = usersOfroomToEdit;
   } else {
     throw new Error(NOT_FOUND_CODE);
   }
 }
 
 function removeUserFromAllRooms(userHash: string): void {
-    if (userService.checkIfUserExist(userHash)) {
-      rooms.forEach(room => {
-        let userToEdit = room.users;
-        userToEdit = userToEdit.filter(user => user.hash !== userHash);
-        room.users = userToEdit;
-      })
-    } else {
-      throw new Error(INAUTHORIZED_CODE);
-    }
+  rooms.forEach(room => {
+    let userToEdit = room.users;
+    userToEdit = userToEdit.filter(user => user.hash !== userHash);
+    room.users = userToEdit;
+  })
 }
 
 function isUserExistInRoom(roomId: number, userHash: string) {
