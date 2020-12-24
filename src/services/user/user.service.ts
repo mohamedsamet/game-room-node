@@ -10,7 +10,7 @@ async function loginUser(user: UserDto): Promise<UserDto> {
   } else {
     user.hash = bcryptService.hashPseudo(user.pseudo);
     user.id = users.length + 1;
-    users.push(user)
+    users.push(user);
     return addUser(user).then(() => {return user});
   }
 }
