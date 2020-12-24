@@ -1,6 +1,7 @@
 import { ErrorResponse } from '../../models/error-status.model';
 import { ERROR_RESPONSE } from '../../constants/error-status.constant';
 import { BAD_REQUEST_CODE, CONFLICT_CODE, DB_CONFLICT } from '../../constants/errors-code.constant';
+import { RED_ERR_COLOR } from '../../constants/logs.constant';
 
 function getResponse(res: any, erreur: Error): Response {
   const errorResponse: ErrorResponse = ERROR_RESPONSE.find(err => err.status === erreur.message);
@@ -12,6 +13,7 @@ function getResponse(res: any, erreur: Error): Response {
 }
 
 function getDbErrorResponse(res: any, err: any): Response {
+  console.log(RED_ERR_COLOR, err);
   let status = BAD_REQUEST_CODE;
   if (err.includes(DB_CONFLICT)) {
     status = CONFLICT_CODE;

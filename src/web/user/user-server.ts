@@ -19,7 +19,6 @@ userServer.post(USER_URL, jsonParse, (req, res) => {
     res.send(user);
     console.log(ADD_NEW_USER_LOG, ' id: ' + user._id);
   }).catch(error => {
-    console.log(RED_ERR_COLOR, error);
     return errorHandlingService.getDbErrorResponse(res, error)
   })
 });
@@ -36,7 +35,6 @@ userServer.get(USER_URL, jsonParse, (req, res) => {
       return errorHandlingService.getResponse(res, Error(INAUTHORIZED_CODE));
     }
   }).catch(error => {
-    console.log(RED_ERR_COLOR, error);
     return errorHandlingService.getDbErrorResponse(res, error)
   })
 });
@@ -53,7 +51,6 @@ userServer.delete(USER_URL, jsonParse, (req, res) => {
       return errorHandlingService.getResponse(res, Error(NOT_FOUND_CODE));
     }
   }).catch(error => {
-    console.log(RED_ERR_COLOR, error);
     return errorHandlingService.getDbErrorResponse(res, error)
   })
 });
