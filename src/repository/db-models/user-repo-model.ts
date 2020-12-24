@@ -1,7 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { USERS_COLLECTION } from '../../constants/database.constant';
-import { userSchema } from './schemas/user-schema';
 
-const UserRepoModel = mongoose.model('UserRepoModel', userSchema, USERS_COLLECTION);
+export interface IUser extends Document {
+  pseudo: string;
+  hash: string;
+}
+
+export const userSchema: Schema = new Schema({
+  pseudo: {type: String, unique: true},
+  hash: String
+});
+
+const UserRepoModel = mongoose.model<IUser>('UserRepoModel', userSchema, USERS_COLLECTION);
 
 export default UserRepoModel;

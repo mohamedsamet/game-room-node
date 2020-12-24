@@ -35,7 +35,7 @@ io.on(CONNECTION, (socketEvent) => {
 
   socketEvent.on(DISCONNECT, () => {
     console.log(DISCONNECTED, userConnectedHash);
-    roomService.removeUserFromAllRooms(userConnectedHash);
+  //  roomService.removeUserFromAllRooms(userConnectedHash);
     socketRoomsService.emitRooms(io);
     emitToAllConnectedRooms();
   })

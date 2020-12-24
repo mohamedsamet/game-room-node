@@ -11,10 +11,10 @@ function addRoom(room: RoomDto, hash: string): RoomDto {
   if (checkIfRoomNameExist(room.name)) {
     throw new Error(CONFLICT_CODE);
   } else {
-    const loggedUser = userService.getUserLogged(hash);
+  //  const loggedUser = userService.getUserLogged(hash);
     room.id = rooms.length + 1;
-    room.createdBy = loggedUser.pseudo;
-    room.createdByUserHash = loggedUser.hash;
+   // room.createdBy = loggedUser.pseudo;
+   // room.createdByUserHash = loggedUser.hash;
     room.users = [];
     rooms.unshift(room)
   }
@@ -58,8 +58,8 @@ function addUserToRoom(roomId: number, userHash: string): void {
   if (isRoomExist(roomId)) {
     if (userService.checkIfUserExist(userHash)) {
       if (!isUserExistInRoom(roomId, userHash)) {
-        const user: UserDto = userService.getUserLogged(userHash);
-        rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
+      //  const user: UserDto = userService.getUserLogged(userHash);
+      //  rooms.find(roomEntred => roomEntred.id === roomId).users.push(user);
       } else {
         throw new Error(CONFLICT_CODE);
       }

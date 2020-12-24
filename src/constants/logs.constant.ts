@@ -22,3 +22,5 @@ export const GET_ROOMS_SOCKET_LOG = CYAN_COLOR + SOCKET_LOG + 'updated rooms lis
 export const GET_USERS_SOCKET_IN_ROOM_LOG = CYAN_COLOR + SOCKET_LOG + 'updated users list in room emitted';
 export const LEAVE_USER_IN_ROOM_LOG = CYAN_COLOR + SOCKET_LOG + 'leave user from room emitted';
 export const MONGO_DB_CONNECTED_LOG = MAGENTA_COLOR + DB_LOG + 'connected to Mongo database';
+export const INAUTHORIZED_CONNECTION_LOG = RED_ERR_COLOR + HTTP_LOG + 'Inauthorized connection';
+export const USER_NOT_FOUND_LOG = RED_ERR_COLOR + HTTP_LOG + 'User not found';
