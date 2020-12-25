@@ -15,10 +15,10 @@ const io = socket(socketServer);
 io.on(CONNECTION, (socketEvent) => {
   let userConnectedHash: string;
   console.log(CONNECTED, socketEvent.id);
-  socketEvent.on(REQUEST_ROOMS, userHash => {
+  socketEvent.on(REQUEST_ROOMS, body => {
     console.log(GET_ROOMS_SOCKET_LOG);
-    userConnectedHash = userHash;
-    socketRoomsService.emitRooms(io);
+    userConnectedHash = body.userHash;
+    socketRoomsService.emitRooms(io, body.roomsByPage).then(res => res).catch(err => err);
   });
 
   socketEvent.on(REQUEST_USERS_IN_ROOM, roomId => {
@@ -36,7 +36,7 @@ io.on(CONNECTION, (socketEvent) => {
   socketEvent.on(DISCONNECT, () => {
     console.log(DISCONNECTED, userConnectedHash);
   //  roomService.removeUserFromAllRooms(userConnectedHash);
-    socketRoomsService.emitRooms(io);
+   // socketRoomsService.emitRooms(io);
     emitToAllConnectedRooms();
   })
 });
