@@ -1,18 +1,18 @@
 import { RoomDto } from '../../../dto/room/room.dto';
-import { RoomsResultDto } from '../../../dto/room/rooms-result.dto';
-import { CONFLICT_CODE, INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../../constants/errors-code.constant';
+import { CONFLICT_CODE, NOT_FOUND_CODE } from '../../../constants/errors-code.constant';
 import { UserDto } from '../../../dto/user/user.dto';
 import { roomRepository } from '../../../repository/room.repository';
 import { userRepository } from '../../../repository/user.repository';
 import { IRoom } from '../../../repository/db-models/room-repo-model';
 import { IRoomResult } from '../../../repository/db-models/room-repo-result';
 
-let rooms: RoomDto[] = [];
+const rooms: RoomDto[] = [];
 
 async function addRoom(room: RoomDto, hash: string): Promise<IRoom> {
   const loggedUser = await userRepository.getUserByHash(hash);
   room.createdBy = loggedUser.pseudo;
   room.createdByUserHash = loggedUser.hash;
+  room.createdAt = new Date().toLocaleDateString();
   return roomRepository.addRoom(room);
 }
 
@@ -24,25 +24,8 @@ async function getRoomsByPage(start: number, end: number): Promise<IRoomResult> 
   }
 }
 
-function checkIfRoomNameExist(name: string): boolean {
-  return rooms.some(room => room.name === name);
-}
-
-function deleteRoomById(id: number, userHash: string): RoomsResultDto {
-  if (isRoomExist(id)) {
-    if (isRoomOwnedByUser(id, userHash)) {
-      rooms = rooms.filter(room => room.id !== id);
-      return {} as RoomsResultDto;
-    } else {
-      throw new Error(INAUTHORIZED_CODE);
-    }
-  } else {
-    throw new Error(NOT_FOUND_CODE);
-  }
-}
-
-function isRoomOwnedByUser(roomId: number, userHash: string): boolean {
-  return rooms.find(room => room.id === roomId).createdByUserHash === userHash;
+async function deleteRoomById(id: string, userHash: string): Promise<IRoom> {
+  return roomRepository.deleteRoomById(id, userHash);
 }
 
 function isRoomExist(roomId: number): boolean {

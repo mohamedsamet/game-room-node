@@ -23,6 +23,13 @@ async function getTotalRooms(): Promise<string> {
     .catch((e) => {throw e.message});
 }
 
+async function deleteRoomById(roomId: string, userHash: string): Promise<IRoom> {
+  return await RoomRepositoryModel.findOneAndDelete({_id: roomId, createdByUserHash: userHash})
+    .then(res => res)
+    .catch((e) => {throw e.message})
+}
+
+
 function getRoomRepModel(roomDto: RoomDto): IRoom {
   return new RoomRepositoryModel({
     name: roomDto.name,
@@ -31,5 +38,5 @@ function getRoomRepModel(roomDto: RoomDto): IRoom {
   });
 }
 
-const roomRepository = {addRoom, getRoomsPaginated, getTotalRooms};
+const roomRepository = {addRoom, getRoomsPaginated, getTotalRooms, deleteRoomById};
 export {roomRepository};

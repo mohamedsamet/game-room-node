@@ -5,6 +5,7 @@ export interface IRoom extends Document {
   name: string;
   createdBy: string;
   createdByUserHash: string;
+  createdAt: string;
   users: string[];
 }
 
@@ -12,6 +13,7 @@ export const roomSchema: Schema = new Schema({
   name: {type: String, unique: true},
   createdBy: String,
   createdByUserHash: String,
+  createdAt: String,
   users: [String]
 });
 

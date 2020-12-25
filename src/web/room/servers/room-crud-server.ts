@@ -6,6 +6,7 @@ import { errorHandlingService } from '../../../services/common-http/error-handli
 import { ADD_NEW_ROOM_LOG, ADD_NEW_USER_LOG, DELETE_ROOM_BY_ID, GET_ROOMS_BY_PAGE_LOG } from '../../../constants/logs.constant';
 import { RoomsResultDto } from '../../../dto/room/rooms-result.dto';
 import bodyParser from 'body-parser';
+import { INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../../constants/errors-code.constant';
 
 const roomCrudServer = express();
 const jsonParse = bodyParser.json();
@@ -13,7 +14,8 @@ const jsonParse = bodyParser.json();
 /** Add new room */
 roomCrudServer.post(ROOM_URL, jsonParse, (req, res) => {
   const request: RoomDto = req.body;
-  roomService.addRoom(request, req.headers.authorization).then(room => {
+  roomService.addRoom(request, req.headers.authorization)
+  .then(room => {
     res.send(room);
     console.log(ADD_NEW_ROOM_LOG);
   }).catch(error => {
@@ -33,14 +35,16 @@ roomCrudServer.get(ROOM_URL, jsonParse, (req, res) => {
 
 /** Delete room by id */
 roomCrudServer.delete(ROOM_URL, jsonParse, (req, res) => {
-  let response: RoomsResultDto;
-  try {
-    response = roomService.deleteRoomById(+req.query.id, req.query.user.toString());
-  } catch (err) {
-    return errorHandlingService.getResponse(res, err);
-  }
-  console.log(DELETE_ROOM_BY_ID);
-  res.send(response);
+  roomService.deleteRoomById(req.query.id.toString(), req.query.user.toString()).then(deletedRoom => {
+    if (deletedRoom) {
+      res.send(deletedRoom);
+      console.log(DELETE_ROOM_BY_ID);
+    } else {
+      return errorHandlingService.getResponse(res, Error(INAUTHORIZED_CODE));
+    }
+  }).catch(err => {
+    return errorHandlingService.getDbErrorResponse(res, err);
+  });
 });
 
 export {roomCrudServer}

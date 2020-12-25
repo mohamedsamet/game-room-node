@@ -5,5 +5,6 @@ export interface RoomDto {
   name: string;
   createdBy: string;
   createdByUserHash: string;
+  createdAt: string;
   users: UserDto[];
 }
