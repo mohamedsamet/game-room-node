@@ -3,10 +3,9 @@ import { ROOM_URL } from '../../../constants/api-const';
 import { RoomDto } from '../../../dto/room/room.dto';
 import { roomService } from '../../../services/rooms/http/room.service';
 import { errorHandlingService } from '../../../services/common-http/error-handling.service';
-import { ADD_NEW_ROOM_LOG, ADD_NEW_USER_LOG, DELETE_ROOM_BY_ID, GET_ROOMS_BY_PAGE_LOG } from '../../../constants/logs.constant';
-import { RoomsResultDto } from '../../../dto/room/rooms-result.dto';
+import { ADD_NEW_ROOM_LOG, DELETE_ROOM_BY_ID, GET_ROOMS_BY_PAGE_LOG, INAUTHORIZED_CONNECTION_LOG } from '../../../constants/logs.constant';
 import bodyParser from 'body-parser';
-import { INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../../constants/errors-code.constant';
+import { INAUTHORIZED_CODE } from '../../../constants/errors-code.constant';
 
 const roomCrudServer = express();
 const jsonParse = bodyParser.json();
@@ -40,6 +39,7 @@ roomCrudServer.delete(ROOM_URL, jsonParse, (req, res) => {
       res.send(deletedRoom);
       console.log(DELETE_ROOM_BY_ID);
     } else {
+      console.log(INAUTHORIZED_CONNECTION_LOG);
       return errorHandlingService.getResponse(res, Error(INAUTHORIZED_CODE));
     }
   }).catch(err => {

@@ -29,14 +29,26 @@ async function deleteRoomById(roomId: string, userHash: string): Promise<IRoom> 
     .catch((e) => {throw e.message})
 }
 
+async function getUsersInRoomById(roomId: string): Promise<string[]> {
+  return await RoomRepositoryModel.findOne({_id: roomId})
+    .then(res => res.users)
+    .catch((e) => {throw e.message})
+}
+
+async function getRoomsIds(userId: string): Promise<string[]> {
+  return await RoomRepositoryModel.find({ users: { $in: [userId]}})
+    .then(res => {return res.map(room => room._id)})
+    .catch((e) => {throw e.message})
+}
 
 function getRoomRepModel(roomDto: RoomDto): IRoom {
   return new RoomRepositoryModel({
     name: roomDto.name,
     createdBy: roomDto.createdBy,
-    createdByUserHash: roomDto.createdByUserHash
+    createdByUserHash: roomDto.createdByUserHash,
+    createdAt: roomDto.createdAt
   });
 }
 
-const roomRepository = {addRoom, getRoomsPaginated, getTotalRooms, deleteRoomById};
-export {roomRepository};
+const roomCrudRepository = {addRoom, getRoomsPaginated, getTotalRooms, deleteRoomById, getUsersInRoomById, getRoomsIds};
+export {roomCrudRepository};

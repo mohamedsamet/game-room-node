@@ -1,6 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { ROOMS_COLLECTION } from '../../constants/database.constant';
 
+export interface IRoomResult {
+  total: string;
+  rooms: IRoom[];
+}
+
 export interface IRoom extends Document {
   name: string;
   createdBy: string;

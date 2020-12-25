@@ -14,36 +14,40 @@ const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {
   let userConnectedHash: string;
+  let roomsByPage: number;
   console.log(CONNECTED, socketEvent.id);
   socketEvent.on(REQUEST_ROOMS, body => {
     console.log(GET_ROOMS_SOCKET_LOG);
-    userConnectedHash = body.userHash;
-    socketRoomsService.emitRooms(io, body.roomsByPage).then(res => res).catch(err => err);
+    userConnectedHash = body.hash;
+    roomsByPage = body.roomsByPage
+    socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
   });
 
   socketEvent.on(REQUEST_USERS_IN_ROOM, roomId => {
     console.log(GET_USERS_SOCKET_IN_ROOM_LOG);
     socketEvent.join(roomId);
-    socketRoomsService.emitUsersInRoom(io, roomId);
+    socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
   });
 
   socketEvent.on(LEAVE_USER_FROM_ROOM, roomId => {
     console.log(LEAVE_USER_IN_ROOM_LOG);
     socketEvent.leave(roomId);
-    socketRoomsService.emitUsersInRoom(io, roomId);
+    socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
   });
 
-  socketEvent.on(DISCONNECT, () => {
+  socketEvent.on(DISCONNECT, async () => {
     console.log(DISCONNECTED, userConnectedHash);
-  //  roomService.removeUserFromAllRooms(userConnectedHash);
-   // socketRoomsService.emitRooms(io);
-    emitToAllConnectedRooms();
+    const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userConnectedHash);
+    roomService.removeUserFromAllRooms(userConnectedHash).then(() => {
+      socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
+      emitToAllConnectedRooms(roomsWhereUserIsConnectedIds).then(res => res).catch(err => err);
+    }).catch(err => err);
   })
 });
 
-function emitToAllConnectedRooms() {
-  roomService.getRoomsIds().forEach(roomId => {
-    socketRoomsService.emitUsersInRoom(io, roomId.toString());
+async function emitToAllConnectedRooms(roomsConnectedIds: string[]) {
+  roomsConnectedIds.forEach(roomId => {
+    socketRoomsService.emitUsersInRoom(io, roomId.toString()).then(res => res).catch(err => err);
   })
 }
 

@@ -1,6 +1,6 @@
-import { UserDto } from './user.dto';
+import { IUser } from '../../repository/db-models/user-repo-model';
 
-export interface UsersRoomResultDto {
-  users: UserDto[];
-  roomId: number;
+export interface IUsersRoomResult {
+  users: IUser[];
+  roomId: string;
 }

@@ -20,6 +20,12 @@ async function removeUserByHash(hash: string): Promise<IUser> {
       .catch((e) => {throw e.message});
 }
 
+async function getUsersByIds(ids: string[]): Promise<IUser[]> {
+    return await UserRepoModel.find({_id: { $in: ids}})
+      .then(res => res)
+      .catch((e) => {throw e.message});
+}
+
 function getUserRepModel(userDto: UserDto): IUser {
   return new UserRepoModel({
     pseudo: userDto.pseudo,
@@ -27,5 +33,5 @@ function getUserRepModel(userDto: UserDto): IUser {
   });
 }
 
-const userRepository = {addUser, getUserByHash, removeUserByHash};
+const userRepository = {addUser, getUserByHash, removeUserByHash, getUsersByIds};
 export {userRepository};
