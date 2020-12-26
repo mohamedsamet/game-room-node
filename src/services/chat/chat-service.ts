@@ -8,6 +8,7 @@ async function addChatMsg(roomId: string, id: string, message: string): Promise<
   chatMsg.userId = loggedUser._id;
   chatMsg.pseudo = loggedUser.pseudo;
   chatMsg.message = message;
+  chatMsg.roomId = roomId;
   chatMsg.dateTime = new Date().toLocaleString();
   return chatRepository.addChatMsg(chatMsg);
 }
