@@ -13,13 +13,13 @@ const socketServer = new http.Server(app)
 const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {
-  let userConnectedHash: string;
+  let userId: string;
   let roomsByPage: number;
   console.log(CONNECTED, socketEvent.id);
   socketEvent.on(REQUEST_ROOMS, body => {
     console.log(GET_ROOMS_SOCKET_LOG);
-    userConnectedHash = body.hash;
-    roomsByPage = body.roomsByPage
+    userId = body.id;
+    roomsByPage = body.roomsByPage;
     socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
   });
 
@@ -36,9 +36,9 @@ io.on(CONNECTION, (socketEvent) => {
   });
 
   socketEvent.on(DISCONNECT, async () => {
-    console.log(DISCONNECTED, userConnectedHash);
-    const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userConnectedHash);
-    roomService.removeUserFromAllRooms(userConnectedHash).then(() => {
+    console.log(DISCONNECTED, userId);
+    const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userId);
+    roomService.removeUserFromAllRooms(userId).then(() => {
       socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
       emitToAllConnectedRooms(roomsWhereUserIsConnectedIds).then(res => res).catch(err => err);
     }).catch(err => err);

@@ -1,21 +1,20 @@
-import { UserDto } from '../dto/user/user.dto';
 import UserRepoModel, { IUser } from './db-models/user-repo-model';
 
-async function addUser(userDto: UserDto): Promise<IUser> {
-    const user: IUser = getUserRepModel(userDto);
+async function addUser(pseudo: string): Promise<IUser> {
+    const user: IUser = getUserRepModel(pseudo);
     return await user.save()
       .then(res => res)
       .catch((e) => {throw e.message});
 }
 
-async function getUserByHash(hash: string): Promise<IUser> {
-    return await UserRepoModel.findOne({hash})
+async function getUserById(id: string): Promise<IUser> {
+    return await UserRepoModel.findOne({_id: id})
       .then(res => res)
       .catch((e) => {throw e.message});
 }
 
-async function removeUserByHash(hash: string): Promise<IUser> {
-    return await UserRepoModel.findOneAndRemove({hash})
+async function removeUserById(id: string): Promise<IUser> {
+    return await UserRepoModel.findOneAndRemove({_id: id})
       .then(res => res)
       .catch((e) => {throw e.message});
 }
@@ -26,12 +25,9 @@ async function getUsersByIds(ids: string[]): Promise<IUser[]> {
       .catch((e) => {throw e.message});
 }
 
-function getUserRepModel(userDto: UserDto): IUser {
-  return new UserRepoModel({
-    pseudo: userDto.pseudo,
-    hash: userDto.hash
-  });
+function getUserRepModel(pseudo: string): IUser {
+  return new UserRepoModel({pseudo});
 }
 
-const userRepository = {addUser, getUserByHash, removeUserByHash, getUsersByIds};
+const userRepository = {addUser, getUserById, removeUserById, getUsersByIds};
 export {userRepository};

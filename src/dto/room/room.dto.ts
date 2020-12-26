@@ -4,7 +4,7 @@ export interface RoomDto {
   id: number;
   name: string;
   createdBy: string;
-  createdByUserHash: string;
+  createdByUserId: string;
   createdAt: string;
   users: UserDto[];
 }

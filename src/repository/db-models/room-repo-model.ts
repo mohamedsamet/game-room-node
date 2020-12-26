@@ -9,7 +9,7 @@ export interface IRoomResult {
 export interface IRoom extends Document {
   name: string;
   createdBy: string;
-  createdByUserHash: string;
+  createdByUserId: string;
   createdAt: string;
   users: string[];
 }
@@ -17,7 +17,7 @@ export interface IRoom extends Document {
 export const roomSchema: Schema = new Schema({
   name: {type: String, unique: true},
   createdBy: String,
-  createdByUserHash: String,
+  createdByUserId: String,
   createdAt: String,
   users: [String]
 });

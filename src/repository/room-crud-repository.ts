@@ -23,8 +23,8 @@ async function getTotalRooms(): Promise<string> {
     .catch((e) => {throw e.message});
 }
 
-async function deleteRoomById(roomId: string, userHash: string): Promise<IRoom> {
-  return await RoomRepositoryModel.findOneAndDelete({_id: roomId, createdByUserHash: userHash})
+async function deleteRoomById(roomId: string, id: string): Promise<IRoom> {
+  return await RoomRepositoryModel.findOneAndDelete({_id: roomId, createdByUserId: id})
     .then(res => res)
     .catch((e) => {throw e.message})
 }
@@ -45,7 +45,7 @@ function getRoomRepModel(roomDto: RoomDto): IRoom {
   return new RoomRepositoryModel({
     name: roomDto.name,
     createdBy: roomDto.createdBy,
-    createdByUserHash: roomDto.createdByUserHash,
+    createdByUserId: roomDto.createdByUserId,
     createdAt: roomDto.createdAt
   });
 }

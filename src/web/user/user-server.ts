@@ -15,7 +15,7 @@ const jsonParse = bodyParser.json();
 /** Add new user with pseudo */
 userServer.post(USER_URL, jsonParse, (req, res) => {
   const request: UserDto = req.body;
-  userService.loginUser(request).then(user => {
+  userService.loginUser(request.pseudo).then(user => {
     res.send(user);
     console.log(ADD_NEW_USER_LOG, ' id: ' + user._id);
   }).catch(error => {
@@ -23,10 +23,10 @@ userServer.post(USER_URL, jsonParse, (req, res) => {
   })
 });
 
-/** Get logged user with hash */
+/** Get logged user with id */
 userServer.get(USER_URL, jsonParse, (req, res) => {
-  const hash = req.headers.authorization;
-  userService.getUserLogged(hash).then(user => {
+  const id = req.headers.authorization;
+  userService.getUserLogged(id).then(user => {
     if (user) {
       res.send(user);
       console.log(GET_LOGGED_USER_LOG, ' id: ' + user._id);
@@ -39,10 +39,10 @@ userServer.get(USER_URL, jsonParse, (req, res) => {
   })
 });
 
-/** Disconnect user with hash */
+/** Disconnect user with id */
 userServer.delete(USER_URL, jsonParse, (req, res) => {
-  const hash = req.headers.authorization;
-  userService.disconnectUser(hash).then(user => {
+  const id = req.headers.authorization;
+  userService.disconnectUser(id).then(user => {
     if (user) {
       res.send(user);
       console.log(DISCONNECT_USER_LOG, ' id: ' + user._id);

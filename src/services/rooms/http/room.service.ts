@@ -4,10 +4,10 @@ import { userRepository } from '../../../repository/user.repository';
 import { IRoom, IRoomResult } from '../../../repository/db-models/room-repo-model';
 import { roomAccessRepository } from '../../../repository/room-access.repository';
 
-async function addRoom(room: RoomDto, hash: string): Promise<IRoom> {
-  const loggedUser = await userRepository.getUserByHash(hash);
+async function addRoom(room: RoomDto, id: string): Promise<IRoom> {
+  const loggedUser = await userRepository.getUserById(id);
   room.createdBy = loggedUser.pseudo;
-  room.createdByUserHash = loggedUser.hash;
+  room.createdByUserId = loggedUser._id;
   room.createdAt = new Date().toLocaleString();
   return roomCrudRepository.addRoom(room);
 }
@@ -18,28 +18,24 @@ async function getRoomsByPage(start: number, end: number): Promise<IRoomResult> 
   return {total, rooms: roomsList}
 }
 
-async function deleteRoomById(id: string, userHash: string): Promise<IRoom> {
-  return roomCrudRepository.deleteRoomById(id, userHash);
+async function deleteRoomById(id: string, userId: string): Promise<IRoom> {
+  return roomCrudRepository.deleteRoomById(id, userId);
 }
 
-async function addUserToRoom(id: string, userHash: string): Promise<IRoom> {
-  const user = await userRepository.getUserByHash(userHash);
-  return roomAccessRepository.addUserToRoom(id, user._id);
+async function addUserToRoom(id: string, userId: string): Promise<IRoom> {
+  return roomAccessRepository.addUserToRoom(id, userId);
 }
 
-async function removeUserFromRoom(id: string, userHash: string): Promise<IRoom> {
-  const user = await userRepository.getUserByHash(userHash);
-  return roomAccessRepository.removeUserFromRoom(id, user._id);
+async function removeUserFromRoom(id: string, userId: string): Promise<IRoom> {
+  return roomAccessRepository.removeUserFromRoom(id, userId);
 }
 
-async function removeUserFromAllRooms(userHash: string): Promise<void> {
-  const user = await userRepository.getUserByHash(userHash);
-  return await roomAccessRepository.removeUserFromAllRooms(user._id);
+async function removeUserFromAllRooms(userId: string): Promise<void> {
+  return await roomAccessRepository.removeUserFromAllRooms(userId);
 }
 
-async function getRoomsIds(userHash: string): Promise<string[]> {
-  const user = await userRepository.getUserByHash(userHash);
-  return await roomCrudRepository.getRoomsIds(user._id);
+async function getRoomsIds(userId: string): Promise<string[]> {
+  return await roomCrudRepository.getRoomsIds(userId);
 }
 
 const roomService = {

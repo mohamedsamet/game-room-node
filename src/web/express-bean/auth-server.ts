@@ -12,8 +12,8 @@ authServer.use('*', async (req, res, next) => {
     if (req.method === 'OPTIONS') {
       next();
     } else {
-      const hash = req.headers.authorization;
-      if (!await userService.getUserLogged(hash)) {
+      const id = req.headers.authorization;
+      if (!await userService.getUserLogged(id)) {
         console.log(INAUTHORIZED_CONNECTION_LOG);
         return errorHandlingService.getResponse(res, Error(INAUTHORIZED_CODE));
       } else {
