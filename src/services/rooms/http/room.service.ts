@@ -34,6 +34,10 @@ async function removeUserFromAllRooms(userId: string): Promise<void> {
   return await roomAccessRepository.removeUserFromAllRooms(userId);
 }
 
+async function cleanRoomsFromUsers(): Promise<void> {
+  return await roomAccessRepository.removeUsersFromAllRooms();
+}
+
 async function getRoomsIds(userId: string): Promise<string[]> {
   return await roomCrudRepository.getRoomsIds(userId);
 }
@@ -45,6 +49,7 @@ const roomService = {
   addUserToRoom,
   removeUserFromRoom,
   removeUserFromAllRooms,
-  getRoomsIds
+  getRoomsIds,
+  cleanRoomsFromUsers
 };
 export {roomService};

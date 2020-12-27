@@ -4,7 +4,7 @@ const DB_LOG = '[db] ';
 export const RED_ERR_COLOR = '\x1b[31m';
 const GREEN_COLOR = '\x1b[92m';
 const CYAN_COLOR = '\x1b[36m';
-const MAGENTA_COLOR = '\x1b[35m';
+const MAGENTA_COLOR = '\x1b[33m';
 const WHITE_COLOR = '\x1b[37m';
 
 export const ADD_NEW_ROOM_LOG = GREEN_COLOR + HTTP_LOG + 'add new room';
@@ -22,5 +22,6 @@ export const GET_ROOMS_SOCKET_LOG = CYAN_COLOR + SOCKET_LOG + 'updated rooms lis
 export const GET_USERS_SOCKET_IN_ROOM_LOG = CYAN_COLOR + SOCKET_LOG + 'updated users list in room emitted';
 export const LEAVE_USER_IN_ROOM_LOG = CYAN_COLOR + SOCKET_LOG + 'leave user from room emitted';
 export const MONGO_DB_CONNECTED_LOG = MAGENTA_COLOR + DB_LOG + 'connected to Mongo database';
-export const INAUTHORIZED_CONNECTION_LOG = RED_ERR_COLOR + HTTP_LOG + 'Inauthorized connection';
 export const USER_NOT_FOUND_LOG = RED_ERR_COLOR + HTTP_LOG + 'User not found';
+export const INAUTHORIZED_CONNECTION_LOG = RED_ERR_COLOR + HTTP_LOG + 'Inauthorized connection';
+export const REMOVE_USERS_INIT_CONNECTION_LOG = MAGENTA_COLOR + DB_LOG + 'Cleaning rooms from users';

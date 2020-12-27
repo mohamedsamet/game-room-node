@@ -18,5 +18,11 @@ async function removeUserFromAllRooms(userId: string): Promise<void> {
       .catch((e) => {throw e.message});
 }
 
-const roomAccessRepository = {addUserToRoom, removeUserFromRoom, removeUserFromAllRooms};
+async function removeUsersFromAllRooms(): Promise<void> {
+    return await RoomRepositoryModel.updateMany({}, { users: []})
+      .then(res => res)
+      .catch((e) => {throw e.message});
+}
+
+const roomAccessRepository = {addUserToRoom, removeUserFromRoom, removeUserFromAllRooms, removeUsersFromAllRooms};
 export {roomAccessRepository};
