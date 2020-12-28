@@ -10,7 +10,7 @@ async function addChatMsg(chatMsg: IChat): Promise<IChat> {
 function getChatRepModel(chatDto: IChat): IChat {
   return new ChatRepoModel({
     roomId: chatDto.roomId,
-    userName: chatDto.pseudo,
+    pseudo: chatDto.pseudo,
     userId: chatDto.userId,
     message: chatDto.message,
     dateTime: chatDto.dateTime
