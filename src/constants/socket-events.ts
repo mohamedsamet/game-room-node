@@ -5,3 +5,5 @@ export const REQUEST_ROOMS = 'reqRooms';
 export const REQUEST_USERS_IN_ROOM = 'reqUsersInRoom';
 export const LEAVE_USER_FROM_ROOM = 'leaveUserFromRoom';
 export const GET_USERS_IN_ROOM = 'getUsersInRoom';
+export const GET_CHATMSG_IN_ROOM = 'getChatMessagesInRoom';
+export const REQUEST_CHATMSG_IN_ROOM = 'reqChatMessagesInRoom';

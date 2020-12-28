@@ -7,6 +7,13 @@ async function addChatMsg(chatMsg: IChat): Promise<IChat> {
       .catch((e) => {throw e.message});
 }
 
+async function getChatMessagesByRoomId(roomId: string): Promise<IChat[]> {
+    return await ChatRepoModel.find({roomId})
+      .sort({field: 'asc', _id: -1})
+      .then(res => res)
+      .catch((e) => {throw e.message});
+}
+
 function getChatRepModel(chatDto: IChat): IChat {
   return new ChatRepoModel({
     roomId: chatDto.roomId,
@@ -17,5 +24,5 @@ function getChatRepModel(chatDto: IChat): IChat {
   });
 }
 
-const chatRepository = {addChatMsg};
+const chatRepository = {addChatMsg, getChatMessagesByRoomId};
 export {chatRepository};
