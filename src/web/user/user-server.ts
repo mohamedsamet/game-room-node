@@ -1,20 +1,20 @@
 import bodyParser from 'body-parser';
 import { USER_URL } from '../../constants/api-const';
-import { UserDto } from '../../dto/user/user.dto';
 import { userService } from '../../services/user/user.service';
 import { errorHandlingService } from '../../services/common-http/error-handling.service';
 import express from 'express';
 import {
-  ADD_NEW_USER_LOG, DISCONNECT_USER_LOG, GET_LOGGED_USER_LOG, INAUTHORIZED_CONNECTION_LOG, RED_ERR_COLOR, USER_NOT_FOUND_LOG
+  ADD_NEW_USER_LOG, DISCONNECT_USER_LOG, GET_LOGGED_USER_LOG, INAUTHORIZED_CONNECTION_LOG, USER_NOT_FOUND_LOG
 } from '../../constants/logs.constant';
 import { INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../constants/errors-code.constant';
+import { IUser } from '../../repository/db-models/user-repo-model';
 
 const userServer = express();
 const jsonParse = bodyParser.json();
 
 /** Add new user with pseudo */
 userServer.post(USER_URL, jsonParse, (req, res) => {
-  const request: UserDto = req.body;
+  const request: IUser = req.body;
   userService.loginUser(request.pseudo).then(user => {
     res.send(user);
     console.log(ADD_NEW_USER_LOG, ' id: ' + user._id);

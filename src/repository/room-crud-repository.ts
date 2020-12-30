@@ -1,7 +1,6 @@
-import { RoomDto } from '../dto/room/room.dto';
 import RoomRepositoryModel, { IRoom } from './db-models/room-repo-model';
 
-async function addRoom(room: RoomDto): Promise<IRoom> {
+async function addRoom(room: IRoom): Promise<IRoom> {
     const roomToSave: IRoom = getRoomRepModel(room);
     return await roomToSave.save()
       .then(res => res)
@@ -41,7 +40,7 @@ async function getRoomsIds(userId: string): Promise<string[]> {
     .catch((e) => {throw e.message})
 }
 
-function getRoomRepModel(roomDto: RoomDto): IRoom {
+function getRoomRepModel(roomDto: IRoom): IRoom {
   return new RoomRepositoryModel({
     name: roomDto.name,
     createdBy: roomDto.createdBy,

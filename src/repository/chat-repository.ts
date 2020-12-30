@@ -25,4 +25,5 @@ function getChatRepModel(chatDto: IChat): IChat {
 }
 
 const chatRepository = {addChatMsg, getChatMessagesByRoomId};
+
 export {chatRepository};

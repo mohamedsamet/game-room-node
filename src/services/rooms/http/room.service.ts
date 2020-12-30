@@ -1,10 +1,9 @@
-import { RoomDto } from '../../../dto/room/room.dto';
 import { roomCrudRepository } from '../../../repository/room-crud-repository';
 import { userRepository } from '../../../repository/user.repository';
 import { IRoom, IRoomResult } from '../../../repository/db-models/room-repo-model';
 import { roomAccessRepository } from '../../../repository/room-access.repository';
 
-async function addRoom(room: RoomDto, id: string): Promise<IRoom> {
+async function addRoom(room: IRoom, id: string): Promise<IRoom> {
   const loggedUser = await userRepository.getUserById(id);
   room.createdBy = loggedUser.pseudo;
   room.createdByUserId = loggedUser._id;

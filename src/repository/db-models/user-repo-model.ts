@@ -5,6 +5,11 @@ export interface IUser extends Document {
   pseudo: string;
 }
 
+export interface IUsersRoomResult {
+  users: IUser[];
+  roomId: string;
+}
+
 export const userSchema: Schema = new Schema({
   pseudo: {type: String, unique: true},
 });

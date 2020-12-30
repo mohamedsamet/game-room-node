@@ -12,7 +12,7 @@ import {
 } from './constants/logs.constant';
 import { MONGO_BASE_URL, MONGO_CONNECTION_OPTIONS, MONGO_DB, MONGO_PORT } from './constants/database.constant';
 import { chatServer } from './web/chat/chat.server';
-import {roomService} from "./services/rooms/http/room.service";
+import { roomService } from './services/rooms/http/room.service';
 
 expressServer.use(authServer);
 expressServer.use(userServer);

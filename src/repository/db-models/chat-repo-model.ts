@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { CHAT_COLLECTION, USERS_COLLECTION } from '../../constants/database.constant';
+import { CHAT_COLLECTION } from '../../constants/database.constant';
 
 export interface IChat extends Document {
   roomId: string;
