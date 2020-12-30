@@ -66,7 +66,7 @@ io.on(CONNECTION, (socketEvent) => {
 async function emitToAllConnectedRooms(roomsConnectedIds: string[]) {
   roomsConnectedIds.forEach(roomId => {
     socketRoomsService.emitUsersInRoom(io, roomId.toString()).then(res => res).catch(err => err);
-  })
+  });
 }
 
 export {socketServer}
