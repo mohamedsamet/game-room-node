@@ -21,11 +21,19 @@ async function emitUsersInRoom(event: SocketIO.Server, roomId: string) {
 
 async function emitMessagesInRoom(event: SocketIO.Server, roomId: string) {
   const chatMessages: IChat[] = await chatRepository.getChatMessagesByRoomId(roomId);
-  event.sockets.in(roomId).emit(GET_CHATMSG_IN_ROOM, {data: chatMessages});
+  event.sockets.in(roomId).emit(GET_CHATMSG_IN_ROOM, {data: parseChatMessagesDates(chatMessages)});
 }
 
 function getUsersInRoomResponse(roomId: string, users: IUser[]): IUsersRoomResult {
   return {users, roomId}
+}
+
+function parseChatMessagesDates(chatMessages: IChat[]): IChat[] {
+  const currentDate = new Date().toLocaleString().slice(0, 10);
+  chatMessages.forEach(chat => {
+    chat.dateTime = chat.dateTime.slice(0, 10) === currentDate ? chat.dateTime.slice(-8) : chat.dateTime;
+  });
+  return chatMessages;
 }
 
 const socketRoomsService = {emitRooms, emitUsersInRoom, emitMessagesInRoom};
