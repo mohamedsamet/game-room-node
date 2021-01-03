@@ -13,11 +13,13 @@ import {
 import { MONGO_BASE_URL, MONGO_CONNECTION_OPTIONS, MONGO_DB, MONGO_PORT } from './constants/database.constant';
 import { chatServer } from './web/chat/chat.server';
 import { roomService } from './services/rooms/http/room.service';
+import { versionServer } from './web/version/version-server';
 
 expressServer.use(authServer);
 expressServer.use(userServer);
 expressServer.use(roomServer);
 expressServer.use(chatServer);
+expressServer.use(versionServer);
 
 mongoose.connect(`${MONGO_BASE_URL}${MONGO_PORT}${MONGO_DB}`, MONGO_CONNECTION_OPTIONS, () => {
   console.log(MONGO_DB_CONNECTED_LOG)
@@ -27,5 +29,5 @@ mongoose.connect(`${MONGO_BASE_URL}${MONGO_PORT}${MONGO_DB}`, MONGO_CONNECTION_O
   });
 
   socketServer.listen(SOCKET_API_PORT);
-})
+});
 

@@ -18,7 +18,7 @@ async function getRoomsPaginated(start: number, end: number): Promise<IRoom[]> {
 
 async function getTotalRooms(): Promise<string> {
     return await RoomRepositoryModel.countDocuments()
-    .then(res => res)
+    .then(res => res.toString())
     .catch((e) => {throw e.message});
 }
 
