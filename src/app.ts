@@ -21,13 +21,17 @@ expressServer.use(roomServer);
 expressServer.use(chatServer);
 expressServer.use(versionServer);
 
-mongoose.connect(`${MONGO_BASE_URL}${MONGO_PORT}${MONGO_DB}`, MONGO_CONNECTION_OPTIONS, () => {
-  console.log(MONGO_DB_CONNECTED_LOG)
-  roomService.cleanRoomsFromUsers().then(() => {console.log(REMOVE_USERS_INIT_CONNECTION_LOG)}).catch(err => err);
-  expressServer.listen(EXPRESS_API_PORT, () => {
-    return console.log(`${EXPRESS_CONNECTED_LOG}${EXPRESS_API_PORT}`);
-  });
+mongoose.connect(`${MONGO_BASE_URL}${MONGO_PORT}${MONGO_DB}`, MONGO_CONNECTION_OPTIONS, (error) => {
+  if (!error) {
+    console.log(MONGO_DB_CONNECTED_LOG)
+    roomService.cleanRoomsFromUsers().then(() => {console.log(REMOVE_USERS_INIT_CONNECTION_LOG)}).catch(err => err);
+    expressServer.listen(EXPRESS_API_PORT, () => {
+      return console.log(`${EXPRESS_CONNECTED_LOG}${EXPRESS_API_PORT}`);
+    });
 
-  socketServer.listen(SOCKET_API_PORT);
+    socketServer.listen(SOCKET_API_PORT);
+  } else {
+    console.error(error);
+  }
 });
 

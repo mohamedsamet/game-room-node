@@ -1,0 +1,7 @@
+version: "3.5"
+
+services:
+  mongo-prod:
+    image: mongo:4.0.4
+    ports:
+      - "27019:27017"
