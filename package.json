@@ -4,9 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "NODE_ENV=dev ts-node-dev src/app.ts",
     "start:mongo": "docker-compose up",
     "start:mongoProd": "docker-compose -f docker-compose-prod.yml up",
-    "start:back": "npm run start:mongo | NODE_ENV=dev ts-node-dev src/app.ts",
+    "start:back": "npm run start:mongo | npm start",
     "build:nodeProd": "rm -rf /dist && NODE_ENV=production tsc -p .",
     "deploy:back": "node dist/src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"

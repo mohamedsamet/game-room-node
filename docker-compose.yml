@@ -2,6 +2,20 @@ version: "3.5"
 
 services:
   mongo:
-    image: mongo:4.0.4
+    image: mongo:4.4.2
     ports:
-      - "27018:27017"
+      - 27018:27017
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+    volumes:
+      - '.:/app'
+    ports:
+      - 3000:3000
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
