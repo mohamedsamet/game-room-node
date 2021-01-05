@@ -3,5 +3,23 @@ version: "3.5"
 services:
   mongo:
     image: mongo:4.0.4
+    restart: always
+    command: mongod --port 27018
     ports:
-      - "27018:27017"
+      - 27018:27018
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - 3000:3000
+      - 3002:3002
+    volumes:
+      - ./:/app
+    depends_on:
+      - mongo
+    links:
+      - mongo
+    environment:
+      - NODE_ENV=dev

@@ -4,11 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start:mongo": "docker-compose up",
+    "start": "NODE_ENV=dev ts-node-dev src/app.ts",
+    "start:back-dev": "docker-compose down -v && docker-compose up",
     "start:mongoProd": "docker-compose -f docker-compose-prod.yml up",
-    "start:back": "npm run start:mongo | NODE_ENV=dev ts-node-dev src/app.ts",
-    "build:nodeProd": "rm -rf /dist && NODE_ENV=production tsc -p .",
+    "build": "rm -rf /dist && NODE_ENV=production tsc -p . && npm run deploy:back",
     "deploy:back": "node dist/src/app.js",
+    "start:back-prod": "docker-compose -f docker-compose-prod.yml down && docker-compose -f docker-compose-prod.yml up --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
