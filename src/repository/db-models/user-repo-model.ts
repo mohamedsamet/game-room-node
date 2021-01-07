@@ -5,6 +5,10 @@ export interface IUser extends Document {
   pseudo: string;
 }
 
+export interface IUserWriter extends IUser {
+  roomId: string;
+}
+
 export interface IUsersRoomResult {
   users: IUser[];
   roomId: string;

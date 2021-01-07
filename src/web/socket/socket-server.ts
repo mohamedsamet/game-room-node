@@ -2,21 +2,13 @@ import express from 'express';
 import http from 'http';
 import socket from 'socket.io';
 import {
-  CONNECTION,
-  DISCONNECT,
-  LEAVE_USER_FROM_ROOM,
-  REQUEST_CHATMSG_IN_ROOM,
-  REQUEST_ROOMS,
-  REQUEST_USERS_IN_ROOM
+  CONNECTION, DISCONNECT, LEAVE_USER_FROM_ROOM, PUSH_WRITER_STATE_IN_ROOM, REQUEST_CHATMSG_IN_ROOM, REQUEST_ROOMS, REQUEST_USERS_IN_ROOM,
+  REQUEST_WRITERS_IN_ROOM
 } from '../../constants/socket-events';
 import { socketRoomsService } from '../../services/rooms/socket/socket-rooms-service';
 import {
-  CONNECTED,
-  DISCONNECTED,
-  GET_ROOMS_MESSAGES_LOG,
-  GET_ROOMS_SOCKET_LOG,
-  GET_USERS_SOCKET_IN_ROOM_LOG,
-  LEAVE_USER_IN_ROOM_LOG
+  CONNECTED, DISCONNECTED, GET_ROOMS_MESSAGES_LOG, GET_ROOMS_SOCKET_LOG, GET_ROOMS_WRITER_LOG, GET_USERS_SOCKET_IN_ROOM_LOG,
+  LEAVE_USER_IN_ROOM_LOG, PUSH_WRITER_STATE_IN_ROOM_LOG
 } from '../../constants/logs.constant';
 import { roomService } from '../../services/rooms/http/room.service';
 
@@ -53,6 +45,17 @@ io.on(CONNECTION, (socketEvent) => {
     socketRoomsService.emitMessagesInRoom(io, roomId).then(res => res).catch(err => err);
   });
 
+  socketEvent.on(REQUEST_WRITERS_IN_ROOM, roomId => {
+    console.log(GET_ROOMS_WRITER_LOG);
+    socketEvent.join(roomId);
+    socketRoomsService.emitWritersInRoom(io, roomId).then(res => res).catch(err => err);
+  });
+
+  socketEvent.on(PUSH_WRITER_STATE_IN_ROOM, state => {
+    console.log(PUSH_WRITER_STATE_IN_ROOM_LOG);
+    socketRoomsService.updateWriterStateInRoom(state.roomId, state.userId, state.status);
+  });
+
   socketEvent.on(DISCONNECT, async () => {
     console.log(DISCONNECTED, userId);
     const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userId);
@@ -60,6 +63,7 @@ io.on(CONNECTION, (socketEvent) => {
       socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
       emitToAllConnectedRooms(roomsWhereUserIsConnectedIds).then(res => res).catch(err => err);
     }).catch(err => err);
+    socketRoomsService.updateWriterStateInRoom('0', userId, false);
   })
 });
 

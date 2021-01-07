@@ -1,11 +1,14 @@
 import SocketIO from 'socket.io';
-import {GET_CHATMSG_IN_ROOM, GET_ROOMS, GET_USERS_IN_ROOM} from '../../../constants/socket-events';
+import {
+  GET_CHATMSG_IN_ROOM, GET_ROOMS, GET_USERS_IN_ROOM, GET_WRITERS_IN_ROOM
+} from '../../../constants/socket-events';
 import { roomCrudRepository } from '../../../repository/room-crud-repository';
-import { IUser, IUsersRoomResult } from '../../../repository/db-models/user-repo-model';
+import { IUser, IUsersRoomResult, IUserWriter } from '../../../repository/db-models/user-repo-model';
 import { userRepository } from '../../../repository/user.repository';
 import { IChat } from '../../../repository/db-models/chat-repo-model';
 import { chatRepository } from '../../../repository/chat-repository';
 
+let writersInRooms: IUserWriter[] = [];
 async function emitRooms(event: SocketIO.Server, roomsByPage: number) {
   const roomList = await roomCrudRepository.getRoomsPaginated(0, roomsByPage - 1);
   const total: string = await roomCrudRepository.getTotalRooms();
@@ -24,6 +27,34 @@ async function emitMessagesInRoom(event: SocketIO.Server, roomId: string) {
   event.sockets.in(roomId).emit(GET_CHATMSG_IN_ROOM, {data: parseChatMessagesDates(chatMessages)});
 }
 
+async function emitWritersInRoom(event: SocketIO.Server, roomId: string) {
+  const writersInRoom: IUserWriter[] = writersInRooms.filter(user => user.roomId === roomId);
+  event.sockets.in(roomId).emit(GET_WRITERS_IN_ROOM, {data: writersInRoom});
+}
+
+function updateWriterStateInRoom(roomId: string, userId: string, status: boolean) {
+  if (status) {
+    pushWriterInRoom(roomId, userId);
+  } else {
+    deleteUserFromRoom(roomId, userId);
+  }
+}
+
+function pushWriterInRoom(roomId: string, userId: string): void {
+  const writer: IUserWriter = {} as IUserWriter;
+  writer.roomId = roomId;
+  writer.pseudo = userId;
+  writersInRooms.push(writer);
+}
+
+function deleteUserFromRoom(roomId: string, userId: string): void {
+  if (roomId === '0') {
+    writersInRooms = writersInRooms.filter(writer => writer.pseudo !== userId);
+  } else {
+    writersInRooms = writersInRooms.filter(writer => !(writer.roomId === roomId && writer.pseudo === userId));
+  }
+}
+
 function getUsersInRoomResponse(roomId: string, users: IUser[]): IUsersRoomResult {
   return {users, roomId}
 }
@@ -36,6 +67,6 @@ function parseChatMessagesDates(chatMessages: IChat[]): IChat[] {
   return chatMessages;
 }
 
-const socketRoomsService = {emitRooms, emitUsersInRoom, emitMessagesInRoom};
+const socketRoomsService = {emitRooms, emitUsersInRoom, emitMessagesInRoom, emitWritersInRoom, updateWriterStateInRoom};
 
 export {socketRoomsService}

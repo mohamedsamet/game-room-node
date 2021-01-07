@@ -26,3 +26,5 @@ export const USER_NOT_FOUND_LOG = RED_ERR_COLOR + HTTP_LOG + 'User not found';
 export const INAUTHORIZED_CONNECTION_LOG = RED_ERR_COLOR + HTTP_LOG + 'Inauthorized connection';
 export const REMOVE_USERS_INIT_CONNECTION_LOG = YELLOW_COLOR + DB_LOG + 'Cleaning rooms from users';
 export const GET_ROOMS_MESSAGES_LOG = CYAN_COLOR + SOCKET_LOG + 'Requesting messages in room';
+export const GET_ROOMS_WRITER_LOG = CYAN_COLOR + SOCKET_LOG + 'Requesting writer in room';
+export const PUSH_WRITER_STATE_IN_ROOM_LOG = CYAN_COLOR + SOCKET_LOG + 'Updating writer state in room';
