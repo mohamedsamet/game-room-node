@@ -53,23 +53,24 @@ io.on(CONNECTION, (socketEvent) => {
 
   socketEvent.on(PUSH_WRITER_STATE_IN_ROOM, state => {
     console.log(PUSH_WRITER_STATE_IN_ROOM_LOG);
-    socketRoomsService.updateWriterStateInRoom(state.roomId, state.userId, state.status);
+    socketRoomsService.updateWriterStateInRoom(state);
   });
 
   socketEvent.on(DISCONNECT, async () => {
     console.log(DISCONNECTED, userId);
     const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userId);
+    socketRoomsService.updateWriterStateInRoom({roomId: '0',pseudo: '', _id: '', status: false});
     roomService.removeUserFromAllRooms(userId).then(() => {
       socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
       emitToAllConnectedRooms(roomsWhereUserIsConnectedIds).then(res => res).catch(err => err);
     }).catch(err => err);
-    socketRoomsService.updateWriterStateInRoom('0', userId, false);
   })
 });
 
 async function emitToAllConnectedRooms(roomsConnectedIds: string[]) {
   roomsConnectedIds.forEach(roomId => {
-    socketRoomsService.emitUsersInRoom(io, roomId.toString()).then(res => res).catch(err => err);
+    socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
+    socketRoomsService.emitWritersInRoom(io, roomId).then(res => res).catch(err => err);
   });
 }
 

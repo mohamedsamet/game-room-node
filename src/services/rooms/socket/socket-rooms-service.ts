@@ -32,26 +32,28 @@ async function emitWritersInRoom(event: SocketIO.Server, roomId: string) {
   event.sockets.in(roomId).emit(GET_WRITERS_IN_ROOM, {data: writersInRoom});
 }
 
-function updateWriterStateInRoom(roomId: string, userId: string, status: boolean) {
-  if (status) {
-    pushWriterInRoom(roomId, userId);
+function updateWriterStateInRoom(state) {
+  if (state.status) {
+    pushWriterInRoom(state.roomId, state.pseudo, state._id);
   } else {
-    deleteUserFromRoom(roomId, userId);
+    deleteUserFromRoom(state.roomId, state.pseudo);
   }
 }
 
-function pushWriterInRoom(roomId: string, userId: string): void {
+function pushWriterInRoom(roomId: string, pseudo: string, userId: string): void {
   const writer: IUserWriter = {} as IUserWriter;
   writer.roomId = roomId;
-  writer.pseudo = userId;
+  writer.pseudo = pseudo;
+  writer._id = userId;
   writersInRooms.push(writer);
 }
 
-function deleteUserFromRoom(roomId: string, userId: string): void {
+
+function deleteUserFromRoom(roomId: string, pseudo: string): void {
   if (roomId === '0') {
-    writersInRooms = writersInRooms.filter(writer => writer.pseudo !== userId);
+    writersInRooms = writersInRooms.filter(writer => writer.pseudo !== pseudo);
   } else {
-    writersInRooms = writersInRooms.filter(writer => !(writer.roomId === roomId && writer.pseudo === userId));
+    writersInRooms = writersInRooms.filter(writer => !(writer.roomId === roomId && writer.pseudo === pseudo));
   }
 }
 
