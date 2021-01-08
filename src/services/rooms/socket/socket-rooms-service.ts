@@ -45,9 +45,14 @@ function pushWriterInRoom(roomId: string, pseudo: string, userId: string): void 
   writer.roomId = roomId;
   writer.pseudo = pseudo;
   writer._id = userId;
-  writersInRooms.push(writer);
+  if (isUserNotWritingInRoom(userId, roomId)) {
+    writersInRooms.push(writer);
+  }
 }
 
+function isUserNotWritingInRoom(userId: string, roomId: string): boolean {
+  return !writersInRooms.find(writer => writer._id === userId && writer.roomId === roomId);
+}
 
 function deleteUserFromRoom(roomId: string, pseudo: string): void {
   if (roomId === '0') {
