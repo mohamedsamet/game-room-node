@@ -36,7 +36,7 @@ function updateWriterStateInRoom(state) {
   if (state.status) {
     pushWriterInRoom(state.roomId, state.pseudo, state._id);
   } else {
-    deleteUserFromRoom(state.roomId, state.pseudo);
+    deleteWriterFromRoomById(state.roomId, state.pseudo);
   }
 }
 
@@ -54,12 +54,12 @@ function isUserNotWritingInRoom(userId: string, roomId: string): boolean {
   return !writersInRooms.find(writer => writer._id === userId && writer.roomId === roomId);
 }
 
-function deleteUserFromRoom(roomId: string, pseudo: string): void {
-  if (roomId === '0') {
-    writersInRooms = writersInRooms.filter(writer => writer.pseudo !== pseudo);
-  } else {
+function deleteWriterFromRoomById(roomId: string, pseudo: string): void {
     writersInRooms = writersInRooms.filter(writer => !(writer.roomId === roomId && writer.pseudo === pseudo));
-  }
+}
+
+function deleteWriterFromAllRooms(userId: string) {
+  writersInRooms = writersInRooms.filter(writer => writer._id !== userId);
 }
 
 function getUsersInRoomResponse(roomId: string, users: IUser[]): IUsersRoomResult {
@@ -74,6 +74,6 @@ function parseChatMessagesDates(chatMessages: IChat[]): IChat[] {
   return chatMessages;
 }
 
-const socketRoomsService = {emitRooms, emitUsersInRoom, emitMessagesInRoom, emitWritersInRoom, updateWriterStateInRoom};
+const socketRoomsService = {emitRooms, emitUsersInRoom, emitMessagesInRoom, emitWritersInRoom, updateWriterStateInRoom, deleteWriterFromAllRooms};
 
 export {socketRoomsService}

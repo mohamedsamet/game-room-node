@@ -59,12 +59,12 @@ io.on(CONNECTION, (socketEvent) => {
   socketEvent.on(DISCONNECT, async () => {
     console.log(DISCONNECTED, userId);
     const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userId);
-    socketRoomsService.updateWriterStateInRoom({roomId: '0',pseudo: '', _id: '', status: false});
+    socketRoomsService.deleteWriterFromAllRooms(userId);
     roomService.removeUserFromAllRooms(userId).then(() => {
       socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
       emitToAllConnectedRooms(roomsWhereUserIsConnectedIds).then(res => res).catch(err => err);
     }).catch(err => err);
-  })
+  });
 });
 
 async function emitToAllConnectedRooms(roomsConnectedIds: string[]) {
