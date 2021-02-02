@@ -1,4 +1,4 @@
-import UserRepoModel, { IUser } from './db-models/user-repo-model';
+import UserRepoModel, { IUser } from './db-models/user-repo.model';
 
 async function addUser(pseudo: string): Promise<IUser> {
     const user: IUser = getUserRepModel(pseudo);

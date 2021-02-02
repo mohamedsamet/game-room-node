@@ -1,11 +1,11 @@
 import express from 'express';
-import { ROOM_URL } from '../../../constants/api-const';
+import { ROOM_URL } from '../../../constants/api.constant';
 import { roomService } from '../../../services/rooms/http/room.service';
 import { errorHandlingService } from '../../../services/common-http/error-handling.service';
 import { ADD_NEW_ROOM_LOG, DELETE_ROOM_BY_ID, GET_ROOMS_BY_PAGE_LOG, INAUTHORIZED_CONNECTION_LOG } from '../../../constants/logs.constant';
 import bodyParser from 'body-parser';
 import { INAUTHORIZED_CODE } from '../../../constants/errors-code.constant';
-import { IRoom } from '../../../repository/db-models/room-repo-model';
+import { IRoom } from '../../../repository/db-models/room-repo.model';
 
 const roomCrudServer = express();
 const jsonParse = bodyParser.json();

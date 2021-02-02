@@ -1,4 +1,4 @@
-import RoomRepositoryModel, { IRoom } from './db-models/room-repo-model';
+import RoomRepositoryModel, { IRoom } from './db-models/room-repo.model';
 
 async function addUserToRoom(roomId: string, userId: string): Promise<IRoom> {
     return await RoomRepositoryModel.findOneAndUpdate({_id: roomId}, { $addToSet: {users: userId}})

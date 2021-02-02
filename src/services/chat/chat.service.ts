@@ -1,5 +1,5 @@
-import { IChat } from '../../repository/db-models/chat-repo-model';
-import { chatRepository } from '../../repository/chat-repository';
+import { IChat } from '../../repository/db-models/chat-repo.model';
+import { chatRepository } from '../../repository/chat.repository';
 import { userRepository } from '../../repository/user.repository';
 
 async function addChatMsg(roomId: string, id: string, message: string): Promise<IChat> {
@@ -9,7 +9,7 @@ async function addChatMsg(roomId: string, id: string, message: string): Promise<
   chatMsg.pseudo = loggedUser.pseudo;
   chatMsg.message = message;
   chatMsg.roomId = roomId;
-  chatMsg.dateTime = new Date().toLocaleString();
+  chatMsg.dateTime = new Date();
   return chatRepository.addChatMsg(chatMsg);
 }
 

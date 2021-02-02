@@ -1,4 +1,4 @@
-import ChatRepoModel, { IChat } from './db-models/chat-repo-model';
+import ChatRepoModel, { IChat } from './db-models/chat-repo.model';
 
 async function addChatMsg(chatMsg: IChat): Promise<IChat> {
     const chatToSave: IChat = getChatRepModel(chatMsg);

@@ -4,8 +4,8 @@ import socket from 'socket.io';
 import {
   CONNECTION, DISCONNECT, LEAVE_USER_FROM_ROOM, PUSH_WRITER_STATE_IN_ROOM, REQUEST_CHATMSG_IN_ROOM, REQUEST_ROOMS, REQUEST_USERS_IN_ROOM,
   REQUEST_WRITERS_IN_ROOM
-} from '../../constants/socket-events';
-import { socketRoomsService } from '../../services/rooms/socket/socket-rooms-service';
+} from '../../constants/socket-events.constant';
+import { socketRoomsService } from '../../services/rooms/socket/socket-rooms.service';
 import {
   CONNECTED, DISCONNECTED, GET_ROOMS_MESSAGES_LOG, GET_ROOMS_SOCKET_LOG, GET_ROOMS_WRITER_LOG, GET_USERS_SOCKET_IN_ROOM_LOG,
   LEAVE_USER_IN_ROOM_LOG, PUSH_WRITER_STATE_IN_ROOM_LOG

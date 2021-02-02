@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import { USER_URL } from '../../constants/api-const';
+import { USER_URL } from '../../constants/api.constant';
 import { userService } from '../../services/user/user.service';
 import { errorHandlingService } from '../../services/common-http/error-handling.service';
 import express from 'express';
@@ -7,7 +7,7 @@ import {
   ADD_NEW_USER_LOG, DISCONNECT_USER_LOG, GET_LOGGED_USER_LOG, INAUTHORIZED_CONNECTION_LOG, USER_NOT_FOUND_LOG
 } from '../../constants/logs.constant';
 import { INAUTHORIZED_CODE, NOT_FOUND_CODE } from '../../constants/errors-code.constant';
-import { IUser } from '../../repository/db-models/user-repo-model';
+import { IUser } from '../../repository/db-models/user-repo.model';
 
 const userServer = express();
 const jsonParse = bodyParser.json();

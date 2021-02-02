@@ -1,10 +1,10 @@
-import { userServer } from './web/user/user-server';
-import { expressServer } from './web/express-bean/allow-origin';
-import { roomServer } from './web/room/room-server';
-import { authServer } from './web/express-bean/auth-server';
-import { socketServer } from './web/socket/socket-server';
+import { userServer } from './web/user/user.server';
+import { expressServer } from './web/express-bean/express-allow-origin.server';
+import { roomServer } from './web/room/room.server';
+import { authServer } from './web/express-bean/auth.server';
+import { socketServer } from './web/socket/socket.server';
 import mongoose from 'mongoose';
-import { EXPRESS_API_PORT, SOCKET_API_PORT } from './constants/api-const';
+import { EXPRESS_API_PORT, SOCKET_API_PORT } from './constants/api.constant';
 import {
   EXPRESS_CONNECTED_LOG,
   MONGO_DB_CONNECTED_LOG,
@@ -13,7 +13,7 @@ import {
 import { MONGO_BASE_URL, MONGO_CONNECTION_OPTIONS, MONGO_DB, MONGO_PORT } from './constants/database.constant';
 import { chatServer } from './web/chat/chat.server';
 import { roomService } from './services/rooms/http/room.service';
-import { versionServer } from './web/version/version-server';
+import { versionServer } from './web/version/version.server';
 
 expressServer.use(authServer);
 expressServer.use(userServer);

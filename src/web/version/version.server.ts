@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import { VERSION_URL} from '../../constants/api-const';
+import { VERSION_URL} from '../../constants/api.constant';
 import * as packageVersion from '../../../package.json';
 import express from 'express';
 

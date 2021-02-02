@@ -6,7 +6,11 @@ export interface IChat extends Document {
   pseudo: string;
   userId: string;
   message: string;
-  dateTime: string;
+  dateTime: Date;
+}
+
+export interface IchatWeb extends IChat{
+  dateTimeParsed: string;
 }
 
 export const chatSchema: Schema = new Schema({

@@ -1,4 +1,4 @@
-import RoomRepositoryModel, { IRoom } from './db-models/room-repo-model';
+import RoomRepositoryModel, { IRoom } from './db-models/room-repo.model';
 
 async function addRoom(room: IRoom): Promise<IRoom> {
     const roomToSave: IRoom = getRoomRepModel(room);

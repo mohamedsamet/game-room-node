@@ -1,6 +1,6 @@
-import { roomCrudRepository } from '../../../repository/room-crud-repository';
+import { roomCrudRepository } from '../../../repository/room-crud.repository';
 import { userRepository } from '../../../repository/user.repository';
-import { IRoom, IRoomResult } from '../../../repository/db-models/room-repo-model';
+import { IRoom, IRoomResult } from '../../../repository/db-models/room-repo.model';
 import { roomAccessRepository } from '../../../repository/room-access.repository';
 
 async function addRoom(room: IRoom, id: string): Promise<IRoom> {

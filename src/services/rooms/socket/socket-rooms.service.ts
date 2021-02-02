@@ -1,12 +1,12 @@
 import SocketIO from 'socket.io';
 import {
   GET_CHATMSG_IN_ROOM, GET_ROOMS, GET_USERS_IN_ROOM, GET_WRITERS_IN_ROOM
-} from '../../../constants/socket-events';
-import { roomCrudRepository } from '../../../repository/room-crud-repository';
-import { IUser, IUsersRoomResult, IUserWriter } from '../../../repository/db-models/user-repo-model';
+} from '../../../constants/socket-events.constant';
+import { roomCrudRepository } from '../../../repository/room-crud.repository';
+import { IUser, IUsersRoomResult, IUserWriter } from '../../../repository/db-models/user-repo.model';
 import { userRepository } from '../../../repository/user.repository';
-import { IChat } from '../../../repository/db-models/chat-repo-model';
-import { chatRepository } from '../../../repository/chat-repository';
+import {IChat, IchatWeb} from '../../../repository/db-models/chat-repo.model';
+import { chatRepository } from '../../../repository/chat.repository';
 
 let writersInRooms: IUserWriter[] = [];
 async function emitRooms(event: SocketIO.Server, roomsByPage: number) {
@@ -66,12 +66,29 @@ function getUsersInRoomResponse(roomId: string, users: IUser[]): IUsersRoomResul
   return {users, roomId}
 }
 
-function parseChatMessagesDates(chatMessages: IChat[]): IChat[] {
-  const currentDate = new Date().toLocaleString().slice(0, 10);
-  chatMessages.forEach(chat => {
-    chat.dateTime = chat.dateTime.slice(0, 10) === currentDate ? chat.dateTime.slice(-8) : chat.dateTime;
-  });
-  return chatMessages;
+function parseChatMessagesDates(chatMessages: IChat[]): IchatWeb[] {
+  return chatMessages.map(chat => mapToChatWeb(chat))
+}
+
+function mapToChatParsedDate(chatDate: Date): string {
+  const chatDateTime = new Date(chatDate);
+  if (chatDateTime.toDateString() === new Date().toDateString()) {
+    return `${padTime(chatDateTime.getHours())}:${padTime(chatDateTime.getMinutes())}`;
+  }
+  return chatDateTime.toLocaleString();
+}
+
+function padTime(time: number): string {
+  return time < 10 ? `0${time}` : time.toString();
+}
+
+function mapToChatWeb(chat: IChat): IchatWeb {
+  const chatMsgWeb = {} as IchatWeb;
+  chatMsgWeb.dateTimeParsed = mapToChatParsedDate(chat.dateTime)
+  chatMsgWeb.userId = chat.userId
+  chatMsgWeb.message = chat.message
+  chatMsgWeb.pseudo = chat.pseudo
+  return chatMsgWeb;
 }
 
 const socketRoomsService = {emitRooms, emitUsersInRoom, emitMessagesInRoom, emitWritersInRoom, updateWriterStateInRoom, deleteWriterFromAllRooms};
