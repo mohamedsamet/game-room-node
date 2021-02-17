@@ -8,7 +8,7 @@ const jsonParse = bodyParser.json();
 
 /** Add new user with pseudo */
 versionServer.get(VERSION_URL, jsonParse, (req, res) => {
-  const version = packageVersion.version
+  const version = packageVersion.version;
   res.send(version);
 });
 
