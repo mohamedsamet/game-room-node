@@ -12,7 +12,7 @@ let writersInRooms: IUserWriter[] = [];
 async function emitRooms(event: SocketIO.Server, roomsByPage: number) {
   const roomList = await roomCrudRepository.getRoomsPaginated(0, roomsByPage - 1);
   const total: string = await roomCrudRepository.getTotalRooms();
-  const roomListResult = {total, rooms: roomList}
+  const roomListResult = {total, rooms: roomList};
   event.emit(GET_ROOMS, {data: roomListResult});
 }
 
@@ -22,9 +22,11 @@ async function emitUsersInRoom(event: SocketIO.Server, roomId: string) {
   event.sockets.in(roomId).emit(GET_USERS_IN_ROOM, {data: getUsersInRoomResponse(roomId, users)});
 }
 
-async function emitMessagesInRoom(event: SocketIO.Server, roomId: string) {
-  const chatMessages: IChat[] = await chatRepository.getChatMessagesByRoomId(roomId);
-  event.sockets.in(roomId).emit(GET_CHATMSG_IN_ROOM, {data: parseChatMessagesDates(chatMessages)});
+async function emitMessagesInRoom(event: SocketIO.Server, body) {
+  const chatMessages: IChat[] = await chatRepository.getChatMessagesByRoomId(body.roomId, body.start, body.end);
+  const total: string = await chatRepository.getTotalMessages();
+  const messages = {total, messages: parseChatMessagesDates(chatMessages)}
+  event.sockets.in(body.roomId).emit(GET_CHATMSG_IN_ROOM, {data: messages});
 }
 
 async function emitWritersInRoom(event: SocketIO.Server, roomId: string) {

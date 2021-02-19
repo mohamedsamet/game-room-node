@@ -1,8 +1,11 @@
-export const MONGO_DB = '/local';
-export const MONGO_PORT = process.env.NODE_ENV === 'dev' ? 27018 : 27019;
-const MONGO_SERVICE_NAME = process.env.NODE_ENV === 'dev' ? 'mongo' : 'mongo-prod';
+export const MONGO_DB= '/local';
+export const MONGO_DB_PROD = '/game-room';
+export const MONGO_PORT = 27018;
+const MONGO_SERVICE_NAME = 'mongo';
 export const MONGO_BASE_URL = `mongodb://${MONGO_SERVICE_NAME}:`;
 export const MONGO_CONNECTION_OPTIONS = {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true};
 export const USERS_COLLECTION = 'users';
 export const CHAT_COLLECTION = 'chat';
 export const ROOMS_COLLECTION = 'rooms';
+export const MONGO_ATLAS_CLUSTER = `mongodb+srv://samet:oUMX63B8gMGGkUi6@cluster0.wpkal.mongodb.net${MONGO_DB_PROD}?retryWrites=true&w=majority`;
+export const MONGO_FINAL_URL = process.env.NODE_ENV === 'dev' ? `${MONGO_BASE_URL}${MONGO_PORT}${MONGO_DB}` : MONGO_ATLAS_CLUSTER;

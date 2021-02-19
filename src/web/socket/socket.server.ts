@@ -39,10 +39,10 @@ io.on(CONNECTION, (socketEvent) => {
     socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
   });
 
-  socketEvent.on(REQUEST_CHATMSG_IN_ROOM, roomId => {
+  socketEvent.on(REQUEST_CHATMSG_IN_ROOM, body => {
     console.log(GET_ROOMS_MESSAGES_LOG);
-    socketEvent.join(roomId);
-    socketRoomsService.emitMessagesInRoom(io, roomId).then(res => res).catch(err => err);
+    socketEvent.join(body.roomId);
+    socketRoomsService.emitMessagesInRoom(io, body).then(res => res).catch(err => err);
   });
 
   socketEvent.on(REQUEST_WRITERS_IN_ROOM, roomId => {

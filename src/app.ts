@@ -10,7 +10,10 @@ import {
   MONGO_DB_CONNECTED_LOG,
   REMOVE_USERS_INIT_CONNECTION_LOG
 } from './constants/logs.constant';
-import { MONGO_BASE_URL, MONGO_CONNECTION_OPTIONS, MONGO_DB, MONGO_PORT } from './constants/database.constant';
+import {
+  MONGO_CONNECTION_OPTIONS,
+  MONGO_FINAL_URL,
+} from './constants/database.constant';
 import { chatServer } from './web/chat/chat.server';
 import { roomService } from './services/rooms/http/room.service';
 import { versionServer } from './web/version/version.server';
@@ -21,14 +24,13 @@ expressServer.use(roomServer);
 expressServer.use(chatServer);
 expressServer.use(versionServer);
 
-mongoose.connect(`${MONGO_BASE_URL}${MONGO_PORT}${MONGO_DB}`, MONGO_CONNECTION_OPTIONS, (error) => {
+mongoose.connect(`${MONGO_FINAL_URL}`, MONGO_CONNECTION_OPTIONS, (error) => {
   if (!error) {
-    console.log(MONGO_DB_CONNECTED_LOG)
+    console.log(MONGO_DB_CONNECTED_LOG);
     roomService.cleanRoomsFromUsers().then(() => {console.log(REMOVE_USERS_INIT_CONNECTION_LOG)}).catch(err => err);
     expressServer.listen(EXPRESS_API_PORT, () => {
       return console.log(`${EXPRESS_CONNECTED_LOG}${EXPRESS_API_PORT}`);
     });
-
     socketServer.listen(SOCKET_API_PORT);
   } else {
     console.error(error);
