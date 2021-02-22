@@ -1,6 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { CHAT_COLLECTION } from '../../constants/database.constant';
 
+export interface IChatResult {
+  messages: IChatWeb[],
+  total: string
+}
+
 export interface IChat extends Document {
   roomId: string;
   pseudo: string;
@@ -9,7 +14,7 @@ export interface IChat extends Document {
   dateTime: Date;
 }
 
-export interface IchatWeb extends IChat{
+export interface IChatWeb extends IChat{
   dateTimeParsed: string;
 }
 

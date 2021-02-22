@@ -14,4 +14,11 @@ chatServer.post(CHAT_URL+ '/:roomId', jsonParse, (req, res) => {
   }).catch(err => {return errorHandlingService.getDbErrorResponse(res, err);})
 });
 
+/** Get paginated messags*/
+chatServer.get(CHAT_URL+ '/:roomId', jsonParse, (req, res) => {
+  chatService.getPaginatedMessages(req.params.roomId, +req.query.start, +req.query.end).then(chatResult => {
+      res.send(chatResult);
+  }).catch(err => {return errorHandlingService.getDbErrorResponse(res, err);})
+});
+
 export {chatServer}
