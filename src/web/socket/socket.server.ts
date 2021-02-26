@@ -13,7 +13,7 @@ import {
 import { roomService } from '../../services/rooms/http/room.service';
 
 const app = express();
-const socketServer = new http.Server(app)
+const socketServer = new http.Server(app);
 const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {
