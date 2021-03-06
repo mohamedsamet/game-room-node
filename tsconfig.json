@@ -8,6 +8,5 @@
     "sourceMap": true,
     "outDir": "dist"
   },
-  "lib": ["es2015"],
-  "exclude": ["./tests/"]
+  "lib": ["es2015"]
 }
