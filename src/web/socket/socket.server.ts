@@ -11,9 +11,9 @@ import {
   LEAVE_USER_IN_ROOM_LOG, PUSH_WRITER_STATE_IN_ROOM_LOG
 } from '../../constants/logs.constant';
 import { roomService } from '../../services/rooms/http/room.service';
-import { expressServer } from '../express-bean/express-allow-origin.server';
 
-const socketServer = new http.Server(expressServer);
+const app = express();
+const socketServer = new http.Server(app);
 const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {
