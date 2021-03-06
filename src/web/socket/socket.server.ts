@@ -11,9 +11,9 @@ import {
   LEAVE_USER_IN_ROOM_LOG, PUSH_WRITER_STATE_IN_ROOM_LOG
 } from '../../constants/logs.constant';
 import { roomService } from '../../services/rooms/http/room.service';
+import { expressServer } from '../express-bean/express-allow-origin.server';
 
-const app = express();
-const socketServer = process.env.NODE_ENV === 'dev' ? new http.Server(app) : 'calm-tundra-11220.herokuapp.com';
+const socketServer = new http.Server(expressServer);
 const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {

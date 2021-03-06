@@ -31,7 +31,6 @@ mongoose.connect(`${MONGO_FINAL_URL}`, MONGO_CONNECTION_OPTIONS, (error) => {
     expressServer.listen(EXPRESS_API_PORT, () => {
       return console.log(`${EXPRESS_CONNECTED_LOG}${EXPRESS_API_PORT}`);
     });
-    socketServer.listen(SOCKET_API_PORT);
   } else {
     console.error(error);
   }
