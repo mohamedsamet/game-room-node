@@ -13,7 +13,7 @@ import {
 import { roomService } from '../../services/rooms/http/room.service';
 
 const app = express();
-const socketServer = new http.Server(app);
+const socketServer = process.env.NODE_ENV === 'dev' ? new http.Server(app) : 'calm-tundra-11220.herokuapp.com';
 const io = socket(socketServer);
 
 io.on(CONNECTION, (socketEvent) => {
