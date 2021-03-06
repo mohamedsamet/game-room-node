@@ -4,14 +4,18 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=dev ts-node-dev src/app.ts",
+    "start:dev": "NODE_ENV=dev ts-node-dev src/app.ts",
+    "start": "NODE_ENV=PROD ts-node-dev src/app.ts",
     "start:back-dev": "docker-compose down -v && docker-compose up",
     "build": "rm -rf /dist && npm i && npm i typescript@4.0.5 -g && NODE_ENV=production tsc -p . ",
     "deploy:back": "node dist/src/app.js",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.spec.ts'"
   },
   "keywords": [],
-  "author": "",
+  "engines": {
+    "node": "12.x"
+  },
+  "author": "samet",
   "license": "ISC",
   "devDependencies": {
     "@types/chai": "^4.2.15",
