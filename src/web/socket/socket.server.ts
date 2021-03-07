@@ -12,66 +12,66 @@ import {
 } from '../../constants/logs.constant';
 import { roomService } from '../../services/rooms/http/room.service';
 
-const app = express();
-const socketServer = new http.Server(app);
-const io = socket(socketServer);
-
-io.on(CONNECTION, (socketEvent) => {
-  let userId: string;
-  let roomsByPage: number;
-  console.log(CONNECTED, socketEvent.id);
-  socketEvent.on(REQUEST_ROOMS, body => {
-    console.log(GET_ROOMS_SOCKET_LOG);
-    userId = body.id;
-    roomsByPage = body.roomsByPage;
-    socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
-  });
-
-  socketEvent.on(REQUEST_USERS_IN_ROOM, roomId => {
-    console.log(GET_USERS_SOCKET_IN_ROOM_LOG);
-    socketEvent.join(roomId);
-    socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
-  });
-
-  socketEvent.on(LEAVE_USER_FROM_ROOM, roomId => {
-    console.log(LEAVE_USER_IN_ROOM_LOG);
-    socketEvent.leave(roomId);
-    socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
-  });
-
-  socketEvent.on(REQUEST_CHATMSG_IN_ROOM, roomId => {
-    console.log(GET_ROOMS_MESSAGES_LOG);
-    socketEvent.join(roomId);
-    socketRoomsService.emitNewMessageInRoom(io, roomId).then(res => res).catch(err => err);
-  });
-
-  socketEvent.on(REQUEST_WRITERS_IN_ROOM, roomId => {
-    console.log(GET_ROOMS_WRITER_LOG);
-    socketEvent.join(roomId);
-    socketRoomsService.emitWritersInRoom(io, roomId).then(res => res).catch(err => err);
-  });
-
-  socketEvent.on(PUSH_WRITER_STATE_IN_ROOM, state => {
-    console.log(PUSH_WRITER_STATE_IN_ROOM_LOG);
-    socketRoomsService.updateWriterStateInRoom(state);
-  });
-
-  socketEvent.on(DISCONNECT, async () => {
-    console.log(DISCONNECTED, userId);
-    const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userId);
-    socketRoomsService.deleteWriterFromAllRooms(userId);
-    roomService.removeUserFromAllRooms(userId).then(() => {
+function socketListen(io) {
+  io.on(CONNECTION, (socketEvent) => {
+    let userId: string;
+    let roomsByPage: number;
+    console.log(CONNECTED, socketEvent.id);
+    socketEvent.on(REQUEST_ROOMS, body => {
+      console.log(GET_ROOMS_SOCKET_LOG);
+      userId = body.id;
+      roomsByPage = body.roomsByPage;
       socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
-      emitToAllConnectedRooms(roomsWhereUserIsConnectedIds).then(res => res).catch(err => err);
-    }).catch(err => err);
-  });
-});
+    });
 
-async function emitToAllConnectedRooms(roomsConnectedIds: string[]) {
+    socketEvent.on(REQUEST_USERS_IN_ROOM, roomId => {
+      console.log(GET_USERS_SOCKET_IN_ROOM_LOG);
+      socketEvent.join(roomId);
+      socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
+    });
+
+    socketEvent.on(LEAVE_USER_FROM_ROOM, roomId => {
+      console.log(LEAVE_USER_IN_ROOM_LOG);
+      socketEvent.leave(roomId);
+      socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
+    });
+
+    socketEvent.on(REQUEST_CHATMSG_IN_ROOM, roomId => {
+      console.log(GET_ROOMS_MESSAGES_LOG);
+      socketEvent.join(roomId);
+      socketRoomsService.emitNewMessageInRoom(io, roomId).then(res => res).catch(err => err);
+    });
+
+    socketEvent.on(REQUEST_WRITERS_IN_ROOM, roomId => {
+      console.log(GET_ROOMS_WRITER_LOG);
+      socketEvent.join(roomId);
+      socketRoomsService.emitWritersInRoom(io, roomId).then(res => res).catch(err => err);
+    });
+
+    socketEvent.on(PUSH_WRITER_STATE_IN_ROOM, state => {
+      console.log(PUSH_WRITER_STATE_IN_ROOM_LOG);
+      socketRoomsService.updateWriterStateInRoom(state);
+    });
+
+    socketEvent.on(DISCONNECT, async () => {
+      console.log(DISCONNECTED, userId);
+      const roomsWhereUserIsConnectedIds = await roomService.getRoomsIds(userId);
+      socketRoomsService.deleteWriterFromAllRooms(userId);
+      roomService.removeUserFromAllRooms(userId).then(() => {
+        socketRoomsService.emitRooms(io, roomsByPage).then(res => res).catch(err => err);
+        emitToAllConnectedRooms(roomsWhereUserIsConnectedIds, io).then(res => res).catch(err => err);
+      }).catch(err => err);
+    });
+  });
+}
+
+async function emitToAllConnectedRooms(roomsConnectedIds: string[], io) {
   roomsConnectedIds.forEach(roomId => {
     socketRoomsService.emitUsersInRoom(io, roomId).then(res => res).catch(err => err);
     socketRoomsService.emitWritersInRoom(io, roomId).then(res => res).catch(err => err);
   });
 }
 
-export {socketServer}
+const socketListenServer = {socketListen}
+
+export {socketListenServer}

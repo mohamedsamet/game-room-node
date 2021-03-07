@@ -8,8 +8,7 @@
     "start": "node dist/src/app.js",
     "start:back-dev": "docker-compose down -v && docker-compose up",
     "build": "rm -rf /dist && npm i && npm i typescript@4.0.5 -g && NODE_ENV=production tsc -p . ",
-    "deploy:back": "node dist/src/app.js",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'src/**/*.spec.ts'"
+    "deploy:back": "node dist/src/app.js"
   },
   "keywords": [],
   "engines": {
