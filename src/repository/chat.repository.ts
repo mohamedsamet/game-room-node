@@ -22,6 +22,12 @@ async function getTotalMessages(): Promise<string> {
         .catch((e) => {throw e.message});
 }
 
+async function deleteMessagesByRoomId(roomId: string): Promise<any> {
+    return await ChatRepoModel.deleteMany({roomId: roomId})
+        .then(res => res.toString())
+        .catch((e) => {throw e.message});
+}
+
 function getChatRepModel(chatDto: IChat): IChat {
   return new ChatRepoModel({
     roomId: chatDto.roomId,
@@ -32,6 +38,6 @@ function getChatRepModel(chatDto: IChat): IChat {
   });
 }
 
-const chatRepository = {addChatMsg, getChatMessagesByRoomId, getTotalMessages};
+const chatRepository = {addChatMsg, getChatMessagesByRoomId, getTotalMessages, deleteMessagesByRoomId};
 
 export {chatRepository};

@@ -2,6 +2,7 @@ import { roomCrudRepository } from '../../../repository/room-crud.repository';
 import { userRepository } from '../../../repository/user.repository';
 import { IRoom, IRoomResult } from '../../../repository/db-models/room-repo.model';
 import { roomAccessRepository } from '../../../repository/room-access.repository';
+import {chatRepository} from "../../../repository/chat.repository";
 
 async function addRoom(room: IRoom, id: string): Promise<IRoom> {
   const loggedUser = await userRepository.getUserById(id);
@@ -18,6 +19,7 @@ async function getRoomsByPage(start: number, end: number): Promise<IRoomResult> 
 }
 
 async function deleteRoomById(id: string, userId: string): Promise<IRoom> {
+  await chatRepository.deleteMessagesByRoomId(id)
   return roomCrudRepository.deleteRoomById(id, userId);
 }
 
